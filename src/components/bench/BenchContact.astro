@@ -1,0 +1,172 @@
+---
+import type { Locale } from '../../i18n/utils';
+import { t } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section id="contacto" class="bench-zone contact-zone">
+  <img
+    src="/images/bench/sequence/09-contact.webp"
+    alt=""
+    class="bench-bg"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <div class="contact-content bench">
+    <div class="contact-body">
+      <p class="kicker">{t(locale, 'sections.contacto.kicker')}</p>
+      <h2 data-bench-reveal>{t(locale, 'sections.contacto.title')}</h2>
+
+      <div
+        class="paper contact-card"
+        style="--rotate: 0.8deg"
+        data-bench-reveal
+        data-delay="150"
+      >
+        <div class="contact-field">
+          <span class="contact-label">{t(locale, 'contact.lab')}</span>
+          <address class="contact-address">
+            Tec Labs, Faculdade de Ci&ecirc;ncias<br />
+            Universidade de Lisboa<br />
+            1749-016 Lisboa
+          </address>
+        </div>
+
+        <div class="contact-divider"></div>
+
+        <div class="contact-field">
+          <span class="contact-label">{t(locale, 'contact.registered')}</span>
+          <address class="contact-address">
+            Rua Esp&iacute;rito Santo n&ordm;18<br />
+            6060-071 Idanha-a-Nova
+          </address>
+        </div>
+      </div>
+
+      <div class="contact-rhizologic" data-bench-reveal data-delay="300">
+        <a
+          href="https://rhizologic.com"
+          class="rhizologic-link"
+          rel="noopener"
+          target="_blank"
+        >
+          {t(locale, 'footer.visitRhizologic')}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-zone {
+    min-height: 80vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bench-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: var(--z-bench);
+  }
+
+  .contact-content {
+    position: relative;
+    z-index: var(--z-raised);
+    width: 100%;
+    padding-block: var(--space-16);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .contact-body {
+    max-width: 480px;
+    width: 100%;
+  }
+
+  .contact-body h2 {
+    font-family: var(--f-display);
+    font-size: var(--text-h1);
+    margin-bottom: var(--space-8);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ── Business card ── */
+  .contact-card {
+    backdrop-filter: blur(6px);
+    background: rgba(245, 240, 225, 0.94);
+    padding: var(--space-6);
+  }
+
+  .contact-field {
+    padding-block: var(--space-3);
+  }
+
+  .contact-label {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: var(--text-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--faded);
+    margin-bottom: var(--space-2);
+  }
+
+  .contact-address {
+    font-family: var(--f-body);
+    font-size: var(--text-body);
+    font-style: normal;
+    color: var(--ink);
+    line-height: 1.65;
+  }
+
+  .contact-divider {
+    height: 1px;
+    background: var(--bench-grain);
+    margin-block: var(--space-2);
+  }
+
+  /* ── Rhizologic link ── */
+  .contact-rhizologic {
+    margin-top: var(--space-6);
+  }
+
+  .rhizologic-link {
+    display: inline-block;
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    font-weight: 600;
+    color: var(--avocado);
+    padding: var(--space-2) 0;
+    text-decoration: none;
+    border-bottom: 1px solid var(--avocado-light);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .rhizologic-link:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  @media (max-width: 768px) {
+    .contact-content {
+      justify-content: center;
+    }
+
+    .contact-body {
+      max-width: 100%;
+    }
+  }
+</style>

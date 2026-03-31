@@ -1,0 +1,241 @@
+---
+import type { Locale } from '../../i18n/utils';
+import { t } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const labels = locale === 'pt'
+  ? {
+      projectTitle: 'Aplicações Agrícolas com Potencial para a Promoção da Economia — AgAPP-e',
+      totalCostLabel: 'Custo Total',
+      euSupportLabel: 'Apoio UE',
+      operationLabel: 'Operação',
+      poster: 'Cartaz do Projeto',
+      sheet: 'Ficha da Operação',
+    }
+  : {
+      projectTitle: 'Agricultural Applications with Potential to Promote the Economy — AgAPP-e',
+      totalCostLabel: 'Total Cost',
+      euSupportLabel: 'EU Support',
+      operationLabel: 'Operation',
+      poster: 'Project Poster',
+      sheet: 'Operation Sheet',
+    };
+---
+
+<section id="compete2030" class="bench-zone eu-zone">
+  <img
+    src="/images/bench/sequence/08-eu-docs.webp"
+    alt=""
+    class="bench-bg"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <div class="eu-content bench">
+    <p class="kicker">{t(locale, 'sections.compete2030.kicker')}</p>
+    <h2 data-bench-reveal>{t(locale, 'sections.compete2030.title')}</h2>
+
+    <div
+      class="paper eu-card"
+      style="--rotate: -0.5deg"
+      data-bench-reveal
+      data-delay="150"
+    >
+      <span class="specimen-code">AgAPP-e &mdash; SUS2022-020</span>
+      <h3 class="eu-project-title">{labels.projectTitle}</h3>
+
+      <dl class="eu-details">
+        <div class="eu-detail-row">
+          <dt>{labels.totalCostLabel}</dt>
+          <dd>&euro;982.833,99</dd>
+        </div>
+        <div class="eu-detail-row">
+          <dt>{labels.euSupportLabel}</dt>
+          <dd>&euro;612.820,49</dd>
+        </div>
+        <div class="eu-detail-row">
+          <dt>{labels.operationLabel}</dt>
+          <dd>SUS2022-020</dd>
+        </div>
+      </dl>
+
+      <div class="eu-downloads">
+        <a
+          href="/docs/agapp-e-cartaz.pdf"
+          class="eu-download-btn"
+          target="_blank"
+          rel="noopener"
+        >
+          {t(locale, 'common.download')}: {labels.poster}
+        </a>
+        <a
+          href="/docs/agapp-e-ficha-operacao.pdf"
+          class="eu-download-btn"
+          target="_blank"
+          rel="noopener"
+        >
+          {t(locale, 'common.download')}: {labels.sheet}
+        </a>
+      </div>
+    </div>
+
+    <!-- EU co-finance logos — mandatory white background strip -->
+    <div class="eu-logos-strip" data-bench-reveal data-delay="300">
+      <img
+        src="/images/eu/C2030_Lisboa2030.png"
+        alt="Compete 2030 / Lisboa 2030 co-finance logos"
+        class="eu-logos-img"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .eu-zone {
+    min-height: 80vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bench-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: var(--z-bench);
+  }
+
+  .eu-content {
+    position: relative;
+    z-index: var(--z-raised);
+    width: 100%;
+    padding-block: var(--space-16);
+  }
+
+  .eu-content h2 {
+    font-family: var(--f-display);
+    font-size: var(--text-h1);
+    margin-bottom: var(--space-10);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ── EU document card ── */
+  .eu-card {
+    backdrop-filter: blur(6px);
+    background: rgba(245, 240, 225, 0.94);
+    max-width: 640px;
+    padding: var(--space-8);
+  }
+
+  .eu-project-title {
+    font-family: var(--f-display);
+    font-size: var(--text-h2);
+    color: var(--ink);
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+
+  /* ── Definition list ── */
+  .eu-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    border-top: 1px solid var(--bench-grain);
+    padding-top: var(--space-4);
+  }
+
+  .eu-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+
+  .eu-detail-row dt {
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    color: var(--pencil);
+    font-weight: 500;
+  }
+
+  .eu-detail-row dd {
+    font-family: var(--f-mono);
+    font-size: var(--text-body);
+    color: var(--ink);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* ── Download buttons ── */
+  .eu-downloads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .eu-download-btn {
+    display: inline-block;
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    font-weight: 600;
+    color: var(--cream);
+    background: var(--ink);
+    padding: var(--space-2) var(--space-5);
+    text-decoration: none;
+    transition:
+      background var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+  }
+
+  .eu-download-btn:hover {
+    background: var(--avocado);
+    color: var(--cream);
+    transform: translateY(-1px);
+  }
+
+  /* ── EU logos strip — mandatory white background ── */
+  .eu-logos-strip {
+    margin-top: var(--space-10);
+    background: #ffffff;
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 1px 2px 8px var(--shadow);
+  }
+
+  .eu-logos-img {
+    max-width: 100%;
+    max-height: 80px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 768px) {
+    .eu-card {
+      max-width: 100%;
+      padding: var(--space-6);
+    }
+
+    .eu-detail-row {
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .eu-downloads {
+      flex-direction: column;
+    }
+
+    .eu-download-btn {
+      text-align: center;
+    }
+  }
+</style>

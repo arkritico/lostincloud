@@ -1,0 +1,173 @@
+---
+import type { Locale } from '../../i18n/utils';
+import { t } from '../../i18n/utils';
+import { team } from '../../data/team';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const stickyColors = ['--blush', '--sky', '--mint', '--lemon', '--blush'];
+const rotations = [-3, 2.5, -1.5, 3, -2];
+const positions = [
+  { top: '8%', left: '5%' },
+  { top: '5%', left: '52%' },
+  { top: '40%', left: '12%' },
+  { top: '38%', left: '58%' },
+  { top: '68%', left: '30%' },
+];
+---
+
+<section id="equipa" class="bench-zone team-zone">
+  <img
+    src="/images/bench/sequence/06-team.webp"
+    alt=""
+    class="bench-bg"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <div class="team-content bench">
+    <p class="kicker">{t(locale, 'sections.equipa.kicker')}</p>
+    <h2 data-bench-reveal>{t(locale, 'sections.equipa.title')}</h2>
+
+    <div class="team-scatter">
+      {team.map((member, i) => (
+        <div
+          class="sticky team-sticky"
+          style={`
+            background-color: var(${stickyColors[i]});
+            --rotate: ${rotations[i]}deg;
+            --pos-top: ${positions[i].top};
+            --pos-left: ${positions[i].left};
+          `}
+          data-bench-reveal
+          data-delay={i * 180}
+        >
+          <h3 class="member-name">{member.name}</h3>
+          <span class="member-role">{member.role[locale]}</span>
+          <span class="member-institution">{member.institution}</span>
+          <p class="member-expertise">
+            {member.expertise.map((e) => e[locale]).join(', ')}
+          </p>
+          {member.orcid && (
+            <a
+              href={`https://orcid.org/${member.orcid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="member-orcid"
+            >
+              ORCID {member.orcid}
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .team-zone {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bench-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: var(--z-bench);
+  }
+
+  .team-content {
+    position: relative;
+    z-index: var(--z-raised);
+    width: 100%;
+    padding-block: var(--space-16);
+  }
+
+  .team-content h2 {
+    font-family: var(--f-display);
+    font-size: var(--text-h1);
+    margin-bottom: var(--space-10);
+  }
+
+  .team-scatter {
+    position: relative;
+    min-height: 70vh;
+  }
+
+  .team-sticky {
+    position: absolute;
+    top: var(--pos-top);
+    left: var(--pos-left);
+    width: clamp(220px, 28vw, 300px);
+  }
+
+  .member-name {
+    font-family: var(--f-display);
+    font-style: italic;
+    font-size: var(--text-h3);
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: var(--space-2);
+    line-height: 1.3;
+  }
+
+  .member-role {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: var(--text-micro);
+    color: var(--pencil);
+    margin-bottom: var(--space-1);
+  }
+
+  .member-institution {
+    display: block;
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    color: var(--pencil);
+    margin-bottom: var(--space-3);
+  }
+
+  .member-expertise {
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    color: var(--faded);
+    line-height: 1.5;
+    margin-bottom: var(--space-2);
+  }
+
+  .member-orcid {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: var(--text-micro);
+    color: var(--avocado);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .member-orcid:hover {
+    color: var(--ink);
+  }
+
+  @media (max-width: 768px) {
+    .team-scatter {
+      position: static;
+      min-height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .team-sticky {
+      position: static;
+      width: 100%;
+    }
+  }
+</style>

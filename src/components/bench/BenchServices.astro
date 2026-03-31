@@ -1,0 +1,194 @@
+---
+import type { Locale } from '../../i18n/utils';
+import { t } from '../../i18n/utils';
+import { services } from '../../data/services';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const kicker = t(locale, 'sections.servicos.kicker');
+const title = t(locale, 'sections.servicos.title');
+
+const delays = [0, 0.1, 0.2, 0.15, 0.25, 0.3];
+---
+
+<section class="bench-zone bench-services" id="servicos">
+  <img
+    class="bench-bg"
+    src="/images/bench/sequence/03-services.webp"
+    alt=""
+    aria-hidden="true"
+    width="1400"
+    height="764"
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="bench-services-overlay"></div>
+  <div class="bench-services-inner">
+    <header class="bench-services-header" data-bench-reveal>
+      <p class="kicker">{kicker}</p>
+      <h2 class="bench-services-title">{title}</h2>
+    </header>
+    <div class="bench-services-grid">
+      {services.map((service, i) => (
+        <article
+          class="paper bench-service-card"
+          data-bench-reveal
+          data-bench-delay={delays[i] ?? 0}
+        >
+          <span class="specimen-code">{service.code}</span>
+          <h3 class="bench-service-name">{service.name}</h3>
+          <p class="bench-service-desc">{service.description[locale]}</p>
+          <div class="bench-service-tags">
+            {service.capabilities.slice(0, 3).map((cap) => (
+              <span class="bench-service-tag">{cap[locale]}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .bench-services {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: var(--space-16);
+    overflow: hidden;
+  }
+
+  .bench-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: var(--z-bench);
+  }
+
+  .bench-services-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(212, 197, 160, 0.6);
+    z-index: var(--z-flat);
+    pointer-events: none;
+  }
+
+  .bench-services-inner {
+    position: relative;
+    z-index: var(--z-raised);
+    max-width: var(--bench-max);
+    width: 100%;
+    padding-inline: var(--bench-margin);
+  }
+
+  .bench-services-header {
+    margin-bottom: var(--space-10);
+    text-align: center;
+  }
+
+  .bench-services-title {
+    font-family: var(--f-display);
+    font-size: var(--text-h1);
+    font-weight: 500;
+    color: var(--ink);
+    text-shadow: 0 1px 3px rgba(245, 240, 225, 0.6);
+  }
+
+  /* ── Service cards grid ── */
+  .bench-services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  .bench-service-card {
+    /* .paper provides bg, shadow, padding */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    --rotate: 0deg; /* override .paper default rotation */
+  }
+
+  .bench-service-card:nth-child(odd) {
+    --rotate: -0.5deg;
+  }
+
+  .bench-service-card:nth-child(even) {
+    --rotate: 0.4deg;
+  }
+
+  .bench-service-name {
+    font-family: var(--f-display);
+    font-size: var(--text-h3);
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: var(--space-1);
+  }
+
+  .bench-service-desc {
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    color: var(--pencil);
+    line-height: 1.6;
+    max-width: 40ch;
+    margin-bottom: var(--space-3);
+  }
+
+  .bench-service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: auto;
+  }
+
+  .bench-service-tag {
+    font-family: var(--f-mono);
+    font-size: var(--text-micro);
+    color: var(--avocado);
+    background: rgba(139, 158, 107, 0.1);
+    padding: var(--space-1) var(--space-2);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  /* ── Tablet: 2 columns ── */
+  @media (max-width: 1024px) {
+    .bench-services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* ── Mobile: 1 column ── */
+  @media (max-width: 768px) {
+    .bench-services {
+      min-height: auto;
+      padding-block: var(--space-12);
+    }
+
+    .bench-services-overlay {
+      background: rgba(212, 197, 160, 0.8);
+    }
+
+    .bench-services-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    .bench-service-card {
+      --rotate: 0deg;
+    }
+
+    .bench-service-desc {
+      max-width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,170 @@
+---
+import type { Locale } from '../../i18n/utils';
+import { t } from '../../i18n/utils';
+import { awards } from '../../data/awards';
+import { assets } from '../../data/assets';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section id="premios" class="bench-zone awards-zone">
+  <img
+    src="/images/bench/sequence/07-awards.webp"
+    alt=""
+    class="bench-bg"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <div class="awards-content bench">
+    <p class="kicker">{t(locale, 'sections.premios.kicker')}</p>
+    <h2 data-bench-reveal>{t(locale, 'sections.premios.title')}</h2>
+
+    <div class="awards-grid">
+      {awards.map((award, i) => (
+        <div
+          class="paper award-card"
+          style={`--rotate: ${i % 2 === 0 ? -1.5 : 1}deg`}
+          data-bench-reveal
+          data-delay={i * 150}
+        >
+          <h3 class="award-name">{award.name[locale]}</h3>
+          <span class="award-org">{award.organization}</span>
+          <p class="award-description">{award.description[locale]}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Laboratory Assets / Patrimonio -->
+    <div class="patrimonio" data-bench-reveal data-delay="300">
+      <p class="kicker">{t(locale, 'sections.patrimonio.kicker')}</p>
+      <h3 class="patrimonio-title">{t(locale, 'sections.patrimonio.title')}</h3>
+
+      <ul class="patrimonio-list">
+        {assets.map((asset) => (
+          <li class="patrimonio-item">
+            <strong class="patrimonio-name">{asset.name}</strong>
+            <span class="patrimonio-desc">{asset.description[locale]}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .awards-zone {
+    min-height: 80vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bench-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: var(--z-bench);
+  }
+
+  .awards-content {
+    position: relative;
+    z-index: var(--z-raised);
+    width: 100%;
+    padding-block: var(--space-16);
+  }
+
+  .awards-content h2 {
+    font-family: var(--f-display);
+    font-size: var(--text-h1);
+    margin-bottom: var(--space-10);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  .awards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+    margin-bottom: var(--space-16);
+  }
+
+  .award-card {
+    backdrop-filter: blur(6px);
+    background: rgba(245, 240, 225, 0.92);
+  }
+
+  .award-name {
+    font-family: var(--f-display);
+    font-size: var(--text-h2);
+    color: var(--ink);
+    margin-bottom: var(--space-2);
+  }
+
+  .award-org {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: var(--text-label);
+    color: var(--faded);
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-4);
+  }
+
+  .award-description {
+    font-family: var(--f-body);
+    font-size: var(--text-body);
+    color: var(--pencil);
+    line-height: 1.65;
+  }
+
+  /* ── Patrimonio ── */
+  .patrimonio-title {
+    font-family: var(--f-display);
+    font-size: var(--text-h2);
+    margin-bottom: var(--space-6);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  .patrimonio-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .patrimonio-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    background: rgba(245, 240, 225, 0.6);
+    backdrop-filter: blur(4px);
+    box-shadow: 1px 2px 6px var(--shadow);
+  }
+
+  .patrimonio-name {
+    font-family: var(--f-body);
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .patrimonio-desc {
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    color: var(--pencil);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .awards-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+</style>

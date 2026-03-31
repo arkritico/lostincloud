@@ -11,9 +11,9 @@ const currentPath = locale === 'pt' ? '/' : '/en/';
 const labels: Record<string, Record<string, string>> = {
   pt: {
     sobre: 'Sobre',
-    servicos: 'Servicos',
+    servicos: 'Serviços',
     produtos: 'Produtos',
-    investigacao: 'Investigacao',
+    investigacao: 'Investigação',
     equipa: 'Equipa',
     contacto: 'Contacto',
     menu: 'Menu',
@@ -31,17 +31,17 @@ const labels: Record<string, Record<string, string>> = {
   },
 };
 
-const t = labels[locale];
+const l = labels[locale];
 const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'contacto'];
 ---
 
-<nav class="nav" aria-label={locale === 'pt' ? 'Navegacao principal' : 'Main navigation'}>
-  <!-- Checkbox lives at nav root so ~ selectors reach overlay -->
+<nav class="nav" aria-label={locale === 'pt' ? 'Navegação principal' : 'Main navigation'}>
+  <!-- Checkbox for CSS-only mobile toggle -->
   <input
     type="checkbox"
     id="nav-toggle"
     class="nav__checkbox sr-only"
-    aria-label={t.menu}
+    aria-label={l.menu}
   />
 
   <div class="nav__inner">
@@ -54,7 +54,7 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     <ul class="nav__links" role="list">
       {anchors.map((id) => (
         <li>
-          <a href={`#${id}`} class="nav__link">{t[id]}</a>
+          <a href={`#${id}`} class="nav__link">{l[id]}</a>
         </li>
       ))}
     </ul>
@@ -76,7 +76,7 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     <ul class="nav__overlay-links" role="list">
       {anchors.map((id) => (
         <li>
-          <a href={`#${id}`} class="nav__overlay-link">{t[id]}</a>
+          <a href={`#${id}`} class="nav__overlay-link">{l[id]}</a>
         </li>
       ))}
     </ul>
@@ -94,14 +94,14 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     left: 0;
     right: 0;
     z-index: var(--z-nav);
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    background: rgba(212, 197, 160, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid transparent;
     transition: border-color var(--duration-normal) var(--ease-out);
   }
 
-  /* Show hairline on scroll — triggered by page having scrolled */
+  /* Show border on scroll */
   @supports (animation-timeline: scroll()) {
     .nav {
       animation: nav-border linear both;
@@ -111,7 +111,7 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
 
     @keyframes nav-border {
       to {
-        border-bottom-color: var(--hairline);
+        border-bottom-color: var(--bench-dark);
       }
     }
   }
@@ -120,9 +120,9 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: var(--grid-max);
+    max-width: var(--bench-max);
     margin-inline: auto;
-    padding-inline: var(--grid-margin);
+    padding-inline: var(--bench-margin);
     height: 3.5rem;
   }
 
@@ -131,15 +131,16 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     font-family: var(--f-display);
     font-size: var(--text-h3);
     font-weight: 400;
-    color: var(--txt-1);
+    color: var(--ink);
     text-decoration: none;
     text-transform: lowercase;
     letter-spacing: -0.01em;
     line-height: 1;
+    transition: color var(--duration-fast) var(--ease-out);
   }
 
   .nav__logo:hover {
-    color: var(--accent);
+    color: var(--avocado);
   }
 
   /* ── Desktop links ── */
@@ -161,14 +162,14 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     font-family: var(--f-body);
     font-size: var(--text-body-sm);
     font-weight: 500;
-    color: var(--txt-2);
+    color: var(--ink);
     text-decoration: none;
     padding-block: var(--space-2);
     transition: color var(--duration-fast) var(--ease-out);
   }
 
   .nav__link:hover {
-    color: var(--accent);
+    color: var(--avocado);
   }
 
   /* Underline-from-center on hover */
@@ -179,7 +180,7 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     left: 50%;
     width: 100%;
     height: 1px;
-    background: var(--accent);
+    background: var(--avocado);
     transform: translateX(-50%) scaleX(0);
     transform-origin: center;
     transition: transform var(--duration-normal) var(--ease-out);
@@ -222,14 +223,14 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     display: block;
     width: 100%;
     height: 2px;
-    background: var(--txt-1);
+    background: var(--ink);
     border-radius: 1px;
     transition:
       transform var(--duration-normal) var(--ease-out),
       opacity var(--duration-fast) var(--ease-out);
   }
 
-  /* Hamburger -> X transform (checkbox is sibling of .nav__inner) */
+  /* Hamburger -> X transform */
   .nav__checkbox:checked ~ .nav__inner .nav__hamburger-bar:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
@@ -247,7 +248,9 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     position: fixed;
     inset: 0;
     top: 3.5rem;
-    background: var(--bg);
+    background: rgba(212, 197, 160, 0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -284,7 +287,7 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
     font-family: var(--f-display);
     font-size: var(--text-h2);
     font-weight: 400;
-    color: var(--txt-1);
+    color: var(--ink);
     text-decoration: none;
     min-height: 44px;
     display: inline-flex;
@@ -294,7 +297,7 @@ const anchors = ['sobre', 'servicos', 'produtos', 'investigacao', 'equipa', 'con
   }
 
   .nav__overlay-link:hover {
-    color: var(--accent);
+    color: var(--avocado);
   }
 
   .nav__overlay-lang {

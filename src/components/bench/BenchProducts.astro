@@ -1,0 +1,149 @@
+---
+import type { Locale } from '../../i18n/utils';
+import { t } from '../../i18n/utils';
+import { products } from '../../data/products';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section id="produtos" class="bench-zone products-zone">
+  <img
+    src="/images/bench/sequence/04-products.webp"
+    alt=""
+    class="bench-bg"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <div class="products-content bench">
+    <p class="kicker">{t(locale, 'sections.produtos.kicker')}</p>
+    <h2 data-bench-reveal>{t(locale, 'sections.produtos.title')}</h2>
+
+    <div class="products-grid">
+      {products.map((product, i) => (
+        <div
+          class="paper product-card"
+          style={`--rotate: ${i % 2 === 0 ? -1.2 : 0.8}deg`}
+          data-bench-reveal
+          data-delay={i * 150}
+        >
+          <span class="specimen-code">{product.code}</span>
+          <h3 class="product-name">{product.name}</h3>
+
+          {product.status === 'available' ? (
+            <span class="stamp stamp--active" style="--stamp-rotate: -4deg">
+              {t(locale, 'common.active')}
+            </span>
+          ) : (
+            <span class="stamp" style="--stamp-rotate: -3deg">
+              {t(locale, 'common.development')}
+            </span>
+          )}
+
+          <p class="product-description">{product.description[locale]}</p>
+
+          <ul class="product-benefits">
+            {product.benefits.map((b) => (
+              <li>{b[locale]}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .products-zone {
+    min-height: 80vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bench-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: var(--z-bench);
+  }
+
+  .products-content {
+    position: relative;
+    z-index: var(--z-raised);
+    width: 100%;
+    padding-block: var(--space-16);
+  }
+
+  .products-content h2 {
+    font-family: var(--f-display);
+    font-size: var(--text-h1);
+    margin-bottom: var(--space-10);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+
+  .product-card {
+    backdrop-filter: blur(6px);
+    background: rgba(245, 240, 225, 0.92);
+  }
+
+  .product-name {
+    font-family: var(--f-display);
+    font-size: var(--text-h2);
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .stamp {
+    margin-bottom: var(--space-4);
+  }
+
+  .product-description {
+    font-family: var(--f-body);
+    color: var(--pencil);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    margin-top: var(--space-4);
+  }
+
+  .product-benefits {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .product-benefits li {
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    color: var(--pencil);
+    padding-left: var(--space-4);
+    position: relative;
+  }
+
+  .product-benefits li::before {
+    content: '\2022';
+    position: absolute;
+    left: 0;
+    color: var(--avocado);
+  }
+
+  @media (max-width: 768px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+</style>
