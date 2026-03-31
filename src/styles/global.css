@@ -1,6 +1,6 @@
 /* ==========================================================================
-   lostincloud.pt — Global Styles
-   "The Light Table" — warm vellum, grain texture, specimen aesthetic
+   lostincloud.pt — "A Bancada" Global Styles
+   1970s laboratory bench, parallax, knolling aesthetic
    ========================================================================== */
 
 @import './tokens.css';
@@ -9,40 +9,37 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ── Base ── */
+/* ── Body = The Bench ── */
 body {
   font-family: var(--f-body);
   font-size: var(--text-body);
   line-height: 1.65;
-  color: var(--txt-1);
-  background-color: var(--bg);
+  color: var(--ink);
+  background-color: var(--bench);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-/* Subtle grain texture on body — feels like real paper */
-body::after {
+/* ── Bench Surface Texture ── */
+body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
+  z-index: -1;
+  background:
+    /* Subtle grain */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    /* Formica surface color */
+    var(--bench);
+  background-size: 256px 256px, auto;
+  opacity: 0.92;
+  mix-blend-mode: multiply;
 }
 
 /* ── Typography ── */
@@ -50,8 +47,7 @@ h1, h2, h3, h4 {
   font-family: var(--f-display);
   font-weight: 500;
   line-height: 1.2;
-  color: var(--txt-1);
-  letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
 h1 { font-size: var(--text-display); }
@@ -60,116 +56,184 @@ h3 { font-size: var(--text-h2); }
 h4 { font-size: var(--text-h3); }
 
 p {
-  max-width: 65ch;
+  max-width: 55ch;
   margin-bottom: var(--space-4);
 }
-
 p:last-child { margin-bottom: 0; }
 
 a {
-  color: var(--accent-mid);
+  color: var(--avocado);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-out);
 }
-
-a:hover { color: var(--accent); }
+a:hover { color: var(--ink); }
 
 /* Focus rings */
 :focus-visible {
-  outline: 2px solid var(--border-focus);
+  outline: 2px solid var(--avocado);
   outline-offset: 2px;
-  border-radius: var(--r-1);
 }
 
-/* ── Section kickers (uppercase labels) ── */
+/* ── Bench Layout ── */
+.bench {
+  position: relative;
+  width: 100%;
+  max-width: var(--bench-max);
+  margin-inline: auto;
+  padding-inline: var(--bench-margin);
+}
+
+.bench-zone {
+  position: relative;
+  padding-block: var(--space-16);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Bench Objects ── */
+
+/* Paper card (fiches, documents, labels) */
+.paper {
+  background: var(--cream);
+  box-shadow: 2px 3px 8px var(--shadow);
+  padding: var(--space-6);
+  transform: rotate(var(--rotate, 0deg));
+  transition: transform var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+.paper:hover {
+  transform: rotate(var(--rotate, 0deg)) translateY(-3px);
+  box-shadow: 3px 5px 16px var(--shadow-deep);
+}
+
+/* Sticky note */
+.sticky {
+  padding: var(--space-4) var(--space-5);
+  box-shadow: 2px 3px 6px var(--shadow);
+  transform: rotate(var(--rotate, -2deg));
+  position: relative;
+  transition: transform var(--duration-normal) var(--ease-bounce),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+.sticky:hover {
+  transform: rotate(var(--rotate, -2deg)) translateY(-4px) scale(1.02);
+  box-shadow: 3px 6px 18px var(--shadow-deep);
+}
+/* Folded corner */
+.sticky::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.04) 50%);
+}
+
+/* Petri dish */
+.petri {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid var(--petri-rim);
+  background: radial-gradient(
+    circle at 45% 45%,
+    var(--culture-color, var(--culture-1)) 20%,
+    var(--petri) 60%
+  );
+  box-shadow:
+    2px 3px 12px var(--shadow),
+    inset 0 0 20px rgba(0,0,0,0.04),
+    inset 0 -2px 4px rgba(0,0,0,0.06);
+  transition: transform var(--duration-normal) var(--ease-bounce),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+.petri:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    3px 6px 20px var(--shadow-deep),
+    inset 0 0 20px rgba(0,0,0,0.04);
+}
+
+/* Rubber stamp */
+.stamp {
+  display: inline-block;
+  border: 2px solid currentColor;
+  padding: 0.15em 0.5em;
+  font-family: var(--f-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transform: rotate(var(--stamp-rotate, -5deg));
+  opacity: 0.75;
+}
+.stamp--active { color: var(--avocado); }
+.stamp--completed { color: var(--red-ink); }
+
+/* Paper clip (CSS only) */
+.paper-clip {
+  position: absolute;
+  top: -8px;
+  right: 16px;
+  width: 16px;
+  height: 32px;
+  border: 2px solid var(--bench-dark);
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+  opacity: 0.4;
+}
+
+/* Coffee stain ring (decorative) */
+.coffee-stain {
+  position: absolute;
+  pointer-events: none;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 32%,
+    rgba(139, 100, 50, 0.05) 36%,
+    rgba(139, 100, 50, 0.03) 42%,
+    transparent 50%
+  );
+}
+
+/* Ring binding (notebook top edge) */
+.ring-binding {
+  display: flex;
+  gap: 12px;
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.ring-binding::before {
+  content: '○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○';
+  font-size: 10px;
+  color: var(--bench-dark);
+  letter-spacing: 4px;
+  opacity: 0.4;
+}
+
+/* ── Kicker / Section Label ── */
 .kicker {
-  font-family: var(--f-body);
-  font-size: var(--text-label);
-  font-weight: 600;
+  font-family: var(--f-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: var(--accent-mid);
-  margin-bottom: var(--space-3);
+  color: var(--faded);
+  margin-bottom: var(--space-2);
 }
 
-/* ── Specimen codes (mono labels) ── */
+/* ── Specimen code ── */
 .specimen-code {
   font-family: var(--f-mono);
   font-size: var(--text-micro);
-  font-weight: 400;
-  color: var(--txt-3);
+  color: var(--faded);
   letter-spacing: 0.05em;
-}
-
-/* ── Container ── */
-.container {
-  width: 100%;
-  max-width: var(--grid-max);
-  margin-inline: auto;
-  padding-inline: var(--grid-margin);
-}
-
-/* ── Sections ── */
-.section {
-  padding-block: var(--space-20);
-}
-
-.section--alt {
-  background-color: var(--bg-alt);
-}
-
-/* ── Hairlines ── */
-.hairline {
-  border: none;
-  height: 1px;
-  background-color: var(--hairline);
-  margin-block: var(--space-8);
-}
-
-/* ── Cards (specimen card base) ── */
-.card {
-  background: var(--surf-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-2);
-  padding: var(--space-8);
-  box-shadow: var(--sh-card);
-  transition:
-    transform var(--duration-normal) var(--ease-out),
-    box-shadow var(--duration-normal) var(--ease-out);
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--sh-card-hover);
-}
-
-/* ── Tags / Pills ── */
-.tag {
-  display: inline-block;
-  font-family: var(--f-body);
-  font-size: var(--text-micro);
-  font-weight: 500;
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--r-full);
-  background: var(--accent-light);
-  color: var(--accent);
-  letter-spacing: 0.02em;
-}
-
-/* ── Botanical divider container ── */
-.botanical-divider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-block: var(--space-12);
-  opacity: 0.5;
-}
-
-.botanical-divider svg {
-  max-width: 400px;
-  width: 100%;
-  height: auto;
-  color: var(--hairline);
 }
 
 /* ── Skip link (a11y) ── */
@@ -177,44 +241,84 @@ a:hover { color: var(--accent); }
   position: absolute;
   top: -100%;
   left: var(--space-4);
-  z-index: var(--z-modal);
+  z-index: 9999;
   padding: var(--space-2) var(--space-4);
-  background: var(--accent);
-  color: var(--txt-inv);
-  border-radius: var(--r-1);
+  background: var(--ink);
+  color: var(--cream);
   font-size: var(--text-body-sm);
 }
+.skip-link:focus { top: var(--space-4); }
 
-.skip-link:focus {
-  top: var(--space-4);
-}
-
-/* ── Images ── */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* ── Responsive breakpoints ── */
-/* mobile: default
-   tablet: 768px
-   desktop: 1024px
-   wide: 1400px */
-
-@media (min-width: 768px) {
-  .section { padding-block: var(--space-24); }
-}
-
-/* ── Utility: visually hidden ── */
+/* ── Utility ── */
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* ── GSAP reveal targets (hidden until animated) ── */
+[data-bench-reveal] {
+  opacity: 0;
+  transform: translateY(40px) rotate(var(--rotate, 0deg));
+}
+
+/* ── Spotlight (cursor light cone, desktop only) ── */
+.spotlight {
+  position: fixed;
+  pointer-events: none;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 248, 230, 0.12) 0%,
+    rgba(255, 248, 230, 0.04) 40%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  z-index: var(--z-spotlight);
+  display: none;
+}
+@media (hover: hover) and (min-width: 769px) {
+  .spotlight { display: block; }
+}
+
+/* ── Mobile: Scroll-Snap Notebook ── */
+@media (max-width: 768px) {
+  .bench-zone {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding-block: var(--space-8);
+  }
+
+  /* Stack objects vertically */
+  .bench-zone > * {
+    max-width: 100%;
+  }
+
+  .petri {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-bench-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  .spotlight { display: none; }
 }
