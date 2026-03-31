@@ -33,6 +33,16 @@ const locale = 'en';
   <main id="main">
     <!-- Hero -->
     <section class="hero">
+      <img
+        class="hero-bg"
+        src="/images/hero/mycelium-hero.webp"
+        alt=""
+        width="1408"
+        height="768"
+        loading="eager"
+        decoding="async"
+      />
+      <div class="hero-overlay"></div>
       <div class="hero-content">
         <h1 class="hero-logo">lostincloud</h1>
         <p class="hero-subtitle">{t(locale, 'hero.subtitle')}</p>
@@ -257,47 +267,77 @@ const locale = 'en';
     text-align: center;
     padding: var(--space-20) var(--grid-margin);
     position: relative;
-    background: var(--bg);
+    overflow: hidden;
+    background: #0C0A06;
   }
 
-  .hero-content { max-width: 700px; }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(12, 10, 6, 0.3) 0%,
+      rgba(12, 10, 6, 0.1) 40%,
+      rgba(12, 10, 6, 0.4) 80%,
+      rgba(12, 10, 6, 0.7) 100%
+    );
+  }
+
+  .hero-content {
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+  }
 
   .hero-logo {
     font-family: var(--f-display);
     font-size: var(--text-display);
     font-weight: 400;
-    color: var(--txt-1);
+    color: #FAFAF6;
     letter-spacing: -0.02em;
     margin: 0 0 var(--space-4);
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
   }
 
   .hero-subtitle {
     font-family: var(--f-body);
     font-size: var(--text-body-lg);
-    color: var(--accent-mid);
+    color: #D8F3DC;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     margin: 0 0 var(--space-6);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   }
 
   .hero-credentials {
     font-family: var(--f-mono);
     font-size: var(--text-body-sm);
-    color: var(--txt-3);
+    color: rgba(250, 250, 246, 0.65);
     letter-spacing: 0.03em;
     margin: 0;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
   }
 
   .hero-scroll {
     position: absolute;
     bottom: var(--space-8);
-    color: var(--txt-3);
+    color: rgba(250, 250, 246, 0.5);
     transition: color var(--duration-fast) var(--ease-out);
     animation: gentle-bounce 2s ease-in-out infinite;
+    z-index: 1;
   }
 
-  .hero-scroll:hover { color: var(--accent-mid); }
+  .hero-scroll:hover { color: #D8F3DC; }
 
   @keyframes gentle-bounce {
     0%, 100% { transform: translateY(0); }
