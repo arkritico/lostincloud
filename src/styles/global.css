@@ -1,0 +1,220 @@
+/* ==========================================================================
+   lostincloud.pt — Global Styles
+   "The Light Table" — warm vellum, grain texture, specimen aesthetic
+   ========================================================================== */
+
+@import './tokens.css';
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Base ── */
+body {
+  font-family: var(--f-body);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: var(--txt-1);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle grain texture on body — feels like real paper */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4 {
+  font-family: var(--f-display);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--txt-1);
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--text-display); }
+h2 { font-size: var(--text-h1); }
+h3 { font-size: var(--text-h2); }
+h4 { font-size: var(--text-h3); }
+
+p {
+  max-width: 65ch;
+  margin-bottom: var(--space-4);
+}
+
+p:last-child { margin-bottom: 0; }
+
+a {
+  color: var(--accent-mid);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover { color: var(--accent); }
+
+/* Focus rings */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--r-1);
+}
+
+/* ── Section kickers (uppercase labels) ── */
+.kicker {
+  font-family: var(--f-body);
+  font-size: var(--text-label);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-mid);
+  margin-bottom: var(--space-3);
+}
+
+/* ── Specimen codes (mono labels) ── */
+.specimen-code {
+  font-family: var(--f-mono);
+  font-size: var(--text-micro);
+  font-weight: 400;
+  color: var(--txt-3);
+  letter-spacing: 0.05em;
+}
+
+/* ── Container ── */
+.container {
+  width: 100%;
+  max-width: var(--grid-max);
+  margin-inline: auto;
+  padding-inline: var(--grid-margin);
+}
+
+/* ── Sections ── */
+.section {
+  padding-block: var(--space-20);
+}
+
+.section--alt {
+  background-color: var(--bg-alt);
+}
+
+/* ── Hairlines ── */
+.hairline {
+  border: none;
+  height: 1px;
+  background-color: var(--hairline);
+  margin-block: var(--space-8);
+}
+
+/* ── Cards (specimen card base) ── */
+.card {
+  background: var(--surf-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--space-8);
+  box-shadow: var(--sh-card);
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-card-hover);
+}
+
+/* ── Tags / Pills ── */
+.tag {
+  display: inline-block;
+  font-family: var(--f-body);
+  font-size: var(--text-micro);
+  font-weight: 500;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--r-full);
+  background: var(--accent-light);
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+/* ── Botanical divider container ── */
+.botanical-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-block: var(--space-12);
+  opacity: 0.5;
+}
+
+.botanical-divider svg {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  color: var(--hairline);
+}
+
+/* ── Skip link (a11y) ── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: var(--z-modal);
+  padding: var(--space-2) var(--space-4);
+  background: var(--accent);
+  color: var(--txt-inv);
+  border-radius: var(--r-1);
+  font-size: var(--text-body-sm);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* ── Images ── */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Responsive breakpoints ── */
+/* mobile: default
+   tablet: 768px
+   desktop: 1024px
+   wide: 1400px */
+
+@media (min-width: 768px) {
+  .section { padding-block: var(--space-24); }
+}
+
+/* ── Utility: visually hidden ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -1,0 +1,113 @@
+---
+interface Props {
+  code: string;
+  name: string;
+  status: 'available' | 'development';
+  statusLabel: string;
+  description: string;
+  benefits: string[];
+}
+
+const { code, name, status, statusLabel, description, benefits } = Astro.props;
+---
+
+<article class={`product-card ${status === 'development' ? 'product-card--dev' : ''}`}>
+  <div class="product-header">
+    <span class="specimen-code">{code}</span>
+    <span class={`product-status ${status}`}>{statusLabel}</span>
+  </div>
+  <h3 class="product-name">{name}</h3>
+  <p class="product-desc">{description}</p>
+  <ul class="product-benefits">
+    {benefits.map((b) => (
+      <li>{b}</li>
+    ))}
+  </ul>
+</article>
+
+<style>
+  .product-card {
+    background: var(--specimen-light);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-2);
+    padding: var(--space-8);
+    transition: transform var(--duration-normal) var(--ease-out),
+                box-shadow var(--duration-normal) var(--ease-out);
+  }
+
+  .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sh-card-hover);
+  }
+
+  .product-card--dev {
+    background: var(--surf-card);
+    border-style: dashed;
+  }
+
+  .product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+  }
+
+  .product-status {
+    font-family: var(--f-mono);
+    font-size: var(--text-micro);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--r-full);
+    font-weight: 500;
+  }
+
+  .product-status.available {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .product-status.development {
+    background: var(--specimen-bg);
+    color: var(--specimen);
+  }
+
+  .product-name {
+    font-family: var(--f-display);
+    font-size: var(--text-h2);
+    font-weight: 500;
+    color: var(--txt-1);
+    margin: 0 0 var(--space-3);
+  }
+
+  .product-desc {
+    color: var(--txt-2);
+    line-height: 1.65;
+    margin: 0 0 var(--space-4);
+  }
+
+  .product-benefits {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .product-benefits li {
+    font-size: var(--text-body-sm);
+    color: var(--txt-2);
+    padding-left: var(--space-5);
+    position: relative;
+  }
+
+  .product-benefits li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-full);
+    background: var(--accent-light);
+    border: 2px solid var(--accent-mid);
+  }
+</style>

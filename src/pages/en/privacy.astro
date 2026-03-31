@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const locale = 'en';
+---
+
+<BaseLayout
+  title="Privacy Policy — lostincloud"
+  description="Privacy policy of Lost in Cloud, Lda. Information about the processing of personal data."
+  locale={locale}
+  canonicalPath="/en/privacy/"
+>
+  <Nav locale={locale} />
+
+  <main id="main">
+    <article class="privacy">
+      <h1>Privacy Policy</h1>
+      <p class="last-updated">Last updated: March 2026</p>
+
+      <section>
+        <h2>Data Controller</h2>
+        <p><strong>Lost in Cloud, Lda</strong><br>
+        Rua Espírito Santo, nº 18<br>
+        6060-071 Idanha-a-Nova<br>
+        Castelo Branco, Portugal</p>
+        <p>Email: <a href="mailto:info@lostincloud.pt">info@lostincloud.pt</a></p>
+      </section>
+
+      <section>
+        <h2>Data Collected</h2>
+        <p>We collect the following personal data:</p>
+        <ul>
+          <li><strong>Contact form:</strong> name, email address, and message, when voluntarily submitted.</li>
+          <li><strong>Browsing data:</strong> anonymous technical information (anonymized IP address, browser type, pages visited) for statistical analysis purposes.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Purpose of Processing</h2>
+        <p>Personal data is processed to:</p>
+        <ul>
+          <li>Respond to information requests and inquiries;</li>
+          <li>Improve the website browsing experience;</li>
+          <li>Comply with applicable legal obligations.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Legal Basis</h2>
+        <p>The processing of personal data is based on:</p>
+        <ul>
+          <li><strong>Consent:</strong> when the user submits data through the contact form.</li>
+          <li><strong>Legitimate interest:</strong> for anonymous statistical analysis of website usage.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Data Retention</h2>
+        <p>Personal data collected through the contact form is retained for the period necessary to respond to the request, and for a maximum of 12 months. Anonymized browsing data is retained for 26 months.</p>
+      </section>
+
+      <section>
+        <h2>Data Sharing</h2>
+        <p>We do not share personal data with third parties, except when required by law. We may use hosting and web analytics services that process data on our behalf, under GDPR-compliant data processing agreements.</p>
+      </section>
+
+      <section>
+        <h2>Your Rights</h2>
+        <p>Under the General Data Protection Regulation (GDPR), you have the right to:</p>
+        <ul>
+          <li>Access your personal data;</li>
+          <li>Request rectification of inaccurate data;</li>
+          <li>Request erasure of your data;</li>
+          <li>Object to the processing of your data;</li>
+          <li>Request data portability;</li>
+          <li>Withdraw consent at any time.</li>
+        </ul>
+        <p>To exercise these rights, contact us at <a href="mailto:info@lostincloud.pt">info@lostincloud.pt</a>.</p>
+      </section>
+
+      <section>
+        <h2>Complaints</h2>
+        <p>You have the right to lodge a complaint with the <a href="https://www.cnpd.pt" target="_blank" rel="noopener">Portuguese Data Protection Authority (CNPD)</a>.</p>
+      </section>
+    </article>
+  </main>
+
+  <Footer locale={locale} />
+</BaseLayout>
+
+<style>
+  .privacy {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-20) var(--grid-margin) var(--space-16);
+  }
+
+  .privacy h1 {
+    font-family: var(--f-display);
+    font-size: var(--text-h1);
+    color: var(--txt-1);
+    margin: 0 0 var(--space-2);
+  }
+
+  .last-updated {
+    font-family: var(--f-mono);
+    font-size: var(--text-micro);
+    color: var(--txt-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 var(--space-12);
+  }
+
+  .privacy section {
+    margin-bottom: var(--space-10);
+  }
+
+  .privacy h2 {
+    font-family: var(--f-display);
+    font-size: var(--text-h3);
+    color: var(--txt-1);
+    margin: 0 0 var(--space-4);
+  }
+
+  .privacy p {
+    color: var(--txt-2);
+    line-height: 1.75;
+    margin: 0 0 var(--space-4);
+  }
+
+  .privacy p:last-child {
+    margin-bottom: 0;
+  }
+
+  .privacy strong {
+    color: var(--txt-1);
+  }
+
+  .privacy ul {
+    color: var(--txt-2);
+    line-height: 1.75;
+    padding-left: var(--space-6);
+    margin: 0 0 var(--space-4);
+  }
+
+  .privacy li {
+    margin-bottom: var(--space-2);
+  }
+
+  .privacy a {
+    color: var(--accent-mid);
+    text-decoration: none;
+  }
+
+  .privacy a:hover {
+    text-decoration: underline;
+  }
+</style>

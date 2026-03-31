@@ -1,0 +1,53 @@
+---
+import type { Locale } from '../i18n/utils';
+
+interface Props {
+  code: string;
+  name: string;
+  description: string;
+  capabilities: string[];
+}
+
+const { code, name, description, capabilities } = Astro.props;
+---
+
+<article class="card service-card">
+  <span class="specimen-code">{code}</span>
+  <h3 class="service-name">{name}</h3>
+  <p class="service-desc">{description}</p>
+  <div class="service-caps">
+    {capabilities.map((cap) => (
+      <span class="tag">{cap}</span>
+    ))}
+  </div>
+</article>
+
+<style>
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .service-name {
+    font-family: var(--f-display);
+    font-size: var(--text-h2);
+    font-weight: 500;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  .service-desc {
+    font-size: var(--text-body);
+    color: var(--txt-2);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .service-caps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+/**
+ * EU Co-financing bar for Compete 2030 compliance.
+ * Must display logos on white background per graphic norms.
+ */
+---
+
+<div class="eu-bar">
+  <div class="eu-bar-inner">
+    <p class="eu-text">Cofinanciado por:</p>
+    <div class="eu-logos">
+      <span class="eu-logo-placeholder">Compete 2030</span>
+      <span class="eu-logo-placeholder">Lisboa 2030</span>
+      <span class="eu-logo-placeholder">Portugal 2030</span>
+      <span class="eu-logo-placeholder">União Europeia</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .eu-bar {
+    background: #FFFFFF;
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) 0;
+  }
+
+  .eu-bar-inner {
+    max-width: var(--grid-max);
+    margin: 0 auto;
+    padding: 0 var(--grid-margin);
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .eu-text {
+    font-size: var(--text-micro);
+    color: var(--txt-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .eu-logos {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .eu-logo-placeholder {
+    font-family: var(--f-mono);
+    font-size: var(--text-micro);
+    color: var(--eu-blue);
+    padding: var(--space-2) var(--space-4);
+    border: 1px dashed var(--eu-blue);
+    border-radius: var(--r-1);
+    opacity: 0.6;
+  }
+</style>

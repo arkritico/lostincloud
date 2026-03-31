@@ -1,0 +1,89 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  locale: 'pt' | 'en';
+  canonicalPath: string;
+}
+
+const { title, description, locale, canonicalPath } = Astro.props;
+
+const siteUrl = 'https://lostincloud.pt';
+const canonical = `${siteUrl}${canonicalPath}`;
+const altLocale = locale === 'pt' ? 'en' : 'pt';
+const altPath = locale === 'pt'
+  ? `/en${canonicalPath}`
+  : canonicalPath.replace(/^\/en/, '') || '/';
+const ogLocale = locale === 'pt' ? 'pt_PT' : 'en_GB';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Lost in Cloud, Lda',
+  url: siteUrl,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Tec Labs — Centro de Inovacao, Campus da FCUL',
+    addressLocality: 'Lisboa',
+    addressCountry: 'PT',
+    postalCode: '1749-016',
+  },
+};
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FAFAF6" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Canonical & hreflang -->
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={locale} href={canonical} />
+    <link rel="alternate" hreflang={altLocale} href={`${siteUrl}${altPath}`} />
+    <link rel="alternate" hreflang="x-default" href={siteUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+
+    <!-- Font preloads -->
+    <link
+      rel="preload"
+      href="/fonts/Newsreader-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Inter-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Styles -->
+    <style is:global>
+      @import '../styles/global.css';
+    </style>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">
+      {locale === 'pt' ? 'Saltar para o conteudo' : 'Skip to content'}
+    </a>
+
+    <slot />
+
+    <!-- Analytics placeholder: insert GA / Plausible script here -->
+  </body>
+</html>

@@ -1,0 +1,102 @@
+/* ==========================================================================
+   lostincloud.pt — Design Tokens
+   "The Light Table" — luminous substrate, specimen cards, scientific precision
+   ========================================================================== */
+
+:root {
+  /* ── Surfaces ── */
+  --bg:            #FAFAF6;   /* Warm vellum — NOT pure white */
+  --bg-alt:        #F0EDE6;   /* Alternate section background */
+  --surf-card:     #FFFFFF;   /* Card surface — floats above substrate */
+  --surf-hero:     rgba(250, 250, 246, 0.88); /* Hero text overlay strip */
+
+  /* ── Accent — Deep Botanical Green ── */
+  --accent:        #1B4332;   /* Primary — scientific authority */
+  --accent-mid:    #2D6A4F;   /* Links, interactive elements */
+  --accent-light:  #D8F3DC;   /* Tag backgrounds, pill highlights */
+  --accent-bg:     rgba(27, 67, 50, 0.05); /* Subtle green wash */
+
+  /* ── Specimen — Warm Amber/Gold ── */
+  --specimen:      #8B6914;   /* Specimen labels, special highlights */
+  --specimen-light:#F5E6C8;   /* Featured card backgrounds */
+  --specimen-bg:   rgba(139, 105, 20, 0.06); /* Subtle amber wash */
+
+  /* ── Text ── */
+  --txt-1:         #1A1714;   /* Primary — warm near-black */
+  --txt-2:         #4A4540;   /* Secondary — descriptions */
+  --txt-3:         #8A8478;   /* Muted — captions, metadata, dates */
+  --txt-inv:       #FAFAF6;   /* Inverted text on dark backgrounds */
+
+  /* ── Structural ── */
+  --hairline:      #D4CFC6;   /* Golden-gray hairlines */
+  --border:        #E4DFD6;   /* Subtle card borders */
+  --border-focus:  #2D6A4F;   /* Focus ring color */
+
+  /* ── Semantic ── */
+  --eu-blue:       #003399;   /* EU institutional blue (mandatory) */
+  --success:       #2D6A4F;   /* Success states */
+  --error:         #C83232;   /* Error/destructive */
+  --active:        #1B7A4A;   /* Active project pulse */
+
+  /* ── Typography ── */
+  --f-display:     'Newsreader', Georgia, 'Times New Roman', serif;
+  --f-body:        'Inter', system-ui, -apple-system, sans-serif;
+  --f-mono:        'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ── Type Scale (clamp-based, responsive) ── */
+  --text-display:    clamp(2.5rem, 5vw, 3.5rem);
+  --text-display-sm: clamp(1.75rem, 3.5vw, 2.5rem);
+  --text-h1:         clamp(1.5rem, 3vw, 2rem);
+  --text-h2:         clamp(1.25rem, 2.5vw, 1.625rem);
+  --text-h3:         clamp(1.0625rem, 2vw, 1.25rem);
+  --text-body-lg:    1.0625rem;    /* 17px */
+  --text-body:       0.9375rem;    /* 15px */
+  --text-body-sm:    0.8125rem;    /* 13px */
+  --text-label:      0.75rem;      /* 12px */
+  --text-micro:      0.6875rem;    /* 11px */
+
+  /* ── Spacing (8px base unit) ── */
+  --space-1:   0.25rem;   /* 4px */
+  --space-2:   0.5rem;    /* 8px */
+  --space-3:   0.75rem;   /* 12px */
+  --space-4:   1rem;      /* 16px */
+  --space-5:   1.25rem;   /* 20px */
+  --space-6:   1.5rem;    /* 24px */
+  --space-8:   2rem;      /* 32px */
+  --space-10:  2.5rem;    /* 40px */
+  --space-12:  3rem;      /* 48px */
+  --space-16:  4rem;      /* 64px */
+  --space-20:  5rem;      /* 80px */
+  --space-24:  6rem;      /* 96px */
+  --space-32:  8rem;      /* 128px */
+
+  /* ── Radii ── */
+  --r-1: 4px;
+  --r-2: 8px;
+  --r-3: 12px;
+  --r-full: 9999px;
+
+  /* ── Shadows ── */
+  --sh-card:   0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+  --sh-card-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  --sh-elevated: 0 8px 24px rgba(26, 23, 20, 0.10);
+
+  /* ── Motion ── */
+  --duration-fast:   150ms;
+  --duration-normal: 250ms;
+  --duration-slow:   400ms;
+  --ease-out:        cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Grid ── */
+  --grid-max:    1100px;
+  --grid-margin: clamp(1.25rem, 4vw, 4rem);
+
+  /* ── Z-index ── */
+  --z-base:     0;
+  --z-card:     1;
+  --z-sticky:   50;
+  --z-nav:      100;
+  --z-overlay:  500;
+  --z-modal:    1000;
+}

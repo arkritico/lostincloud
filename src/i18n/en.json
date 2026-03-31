@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "sobre": "About",
+    "servicos": "Services",
+    "produtos": "Products",
+    "investigacao": "Research",
+    "equipa": "Team",
+    "premios": "Awards",
+    "contacto": "Contact"
+  },
+  "hero": {
+    "subtitle": "Mycology Research Laboratory",
+    "credentials": "Est. 2014 · Tec Labs, University of Lisbon · 8 R&D Projects",
+    "scroll": "Explore"
+  },
+  "sections": {
+    "sobre": { "kicker": "About Us", "title": "Science in Service of the Land" },
+    "servicos": { "kicker": "Services", "title": "Analytical Instruments" },
+    "produtos": { "kicker": "Products", "title": "Biological Solutions" },
+    "investigacao": { "kicker": "Research", "title": "R&D Projects" },
+    "equipa": { "kicker": "Team", "title": "Researchers" },
+    "premios": { "kicker": "Recognition", "title": "Awards & Distinctions" },
+    "patrimonio": { "kicker": "Assets", "title": "Laboratory Infrastructure" },
+    "compete2030": { "kicker": "Compete 2030", "title": "European Co-Financing" },
+    "contacto": { "kicker": "Contact", "title": "Get in Touch" }
+  },
+  "footer": {
+    "copyright": "Lost in Cloud, Lda. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "tagline": "Biotechnology in service of sustainable agriculture",
+    "visitRhizologic": "Visit rhizologic.com for the immersive research experience"
+  },
+  "lang": {
+    "current": "EN",
+    "switch": "PT",
+    "switchLabel": "Versão portuguesa"
+  },
+  "contact": {
+    "lab": "Laboratory",
+    "registered": "Registered Office",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "download": "Download",
+    "active": "Active",
+    "completed": "Completed",
+    "development": "In Development",
+    "partners": "Partners",
+    "budget": "Budget",
+    "timeline": "Timeline",
+    "contactForQuote": "Contact us for a quote"
+  }
+}

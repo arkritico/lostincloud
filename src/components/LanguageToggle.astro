@@ -1,0 +1,60 @@
+---
+interface Props {
+  locale: 'pt' | 'en';
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+
+const ptHref = locale === 'en'
+  ? currentPath.replace(/^\/en/, '') || '/'
+  : currentPath;
+const enHref = locale === 'pt'
+  ? `/en${currentPath}`
+  : currentPath;
+---
+
+<span class="lang-toggle" role="navigation" aria-label="Language">
+  {locale === 'pt' ? (
+    <span class="lang-toggle__active" aria-current="true">PT</span>
+  ) : (
+    <a href={ptHref} class="lang-toggle__link" hreflang="pt">PT</a>
+  )}
+  <span class="lang-toggle__sep" aria-hidden="true">|</span>
+  {locale === 'en' ? (
+    <span class="lang-toggle__active" aria-current="true">EN</span>
+  ) : (
+    <a href={enHref} class="lang-toggle__link" hreflang="en">EN</a>
+  )}
+</span>
+
+<style>
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--f-body);
+    font-size: var(--text-body-sm);
+    letter-spacing: 0.04em;
+  }
+
+  .lang-toggle__active {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .lang-toggle__link {
+    color: var(--txt-3);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .lang-toggle__link:hover {
+    color: var(--accent-mid);
+  }
+
+  .lang-toggle__sep {
+    color: var(--hairline);
+    user-select: none;
+  }
+</style>

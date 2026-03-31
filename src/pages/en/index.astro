@@ -1,0 +1,383 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/Section.astro';
+import BotanicalDivider from '../../components/BotanicalDivider.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import ProjectNode from '../../components/ProjectNode.astro';
+import TeamMember from '../../components/TeamMember.astro';
+import EuCofinanceBar from '../../components/EuCofinanceBar.astro';
+import DownloadButton from '../../components/DownloadButton.astro';
+
+import { services } from '../../data/services';
+import { products } from '../../data/products';
+import { projects } from '../../data/projects';
+import { team } from '../../data/team';
+import { awards } from '../../data/awards';
+import { assets } from '../../data/assets';
+import { t } from '../../i18n/utils';
+
+const locale = 'en';
+---
+
+<BaseLayout
+  title="lostincloud — Mycology Research Laboratory"
+  description="Biotechnology in service of sustainable agriculture. Molecular identification, soil diagnostics, NIR spectroscopy, and drone surveys."
+  locale={locale}
+  canonicalPath="/en/"
+>
+  <Nav locale={locale} />
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-logo">lostincloud</h1>
+        <p class="hero-subtitle">{t(locale, 'hero.subtitle')}</p>
+        <p class="hero-credentials">{t(locale, 'hero.credentials')}</p>
+      </div>
+      <a href="#about" class="hero-scroll" aria-label={t(locale, 'hero.scroll')}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+      </a>
+    </section>
+
+    <BotanicalDivider variant={1} />
+
+    <!-- About -->
+    <Section id="about" kicker={t(locale, 'sections.sobre.kicker')} title={t(locale, 'sections.sobre.title')} alt>
+      <div class="about-grid">
+        <div class="about-text">
+          <p><strong>Lost in Cloud</strong> (formerly Soilvitae) is a Portuguese biotechnology company specializing in sustainable agricultural solutions through the development of innovative plant-microbe-soil assemblies.</p>
+          <p>Founded in 2014 by a team of researchers with over two decades of experience in applied plant science, the company focuses on enhancing agricultural productivity while ensuring food security and the sustainable use of natural resources.</p>
+          <p>Our mission is to re-establish the connectivity among the distinct agrosystem components, contributing to regenerate degraded soils, enhance their productivity, and promote sustainable agricultural practices.</p>
+        </div>
+        <aside class="about-facts card">
+          <dl class="facts-list">
+            <div class="fact">
+              <dt>Founded</dt>
+              <dd>2014</dd>
+            </div>
+            <div class="fact">
+              <dt>Laboratory</dt>
+              <dd>Tec Labs, University of Lisbon</dd>
+            </div>
+            <div class="fact">
+              <dt>Legal Entity</dt>
+              <dd>Lost in Cloud, Lda</dd>
+            </div>
+            <div class="fact">
+              <dt>Team</dt>
+              <dd>5 researchers</dd>
+            </div>
+            <div class="fact">
+              <dt>R&D Projects</dt>
+              <dd>8 active and completed</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </Section>
+
+    <BotanicalDivider variant={2} />
+
+    <!-- Services -->
+    <Section id="services" kicker={t(locale, 'sections.servicos.kicker')} title={t(locale, 'sections.servicos.title')}>
+      <div class="services-grid">
+        {services.map((s) => (
+          <ServiceCard
+            code={s.code}
+            name={s.name}
+            description={s.description.en}
+            capabilities={s.capabilities.map(c => c.en)}
+          />
+        ))}
+      </div>
+    </Section>
+
+    <BotanicalDivider variant={3} />
+
+    <!-- Products -->
+    <Section id="products" kicker={t(locale, 'sections.produtos.kicker')} title={t(locale, 'sections.produtos.title')} alt>
+      <div class="products-grid">
+        {products.map((p) => (
+          <ProductCard
+            code={p.code}
+            name={p.name}
+            status={p.status}
+            statusLabel={t(locale, `common.${p.status === 'available' ? 'active' : 'development'}`)}
+            description={p.description.en}
+            benefits={p.benefits.map(b => b.en)}
+          />
+        ))}
+      </div>
+    </Section>
+
+    <BotanicalDivider variant={4} />
+
+    <!-- Research -->
+    <Section id="research" kicker={t(locale, 'sections.investigacao.kicker')} title={t(locale, 'sections.investigacao.title')}>
+      <div class="timeline">
+        <div class="timeline-line"></div>
+        {projects.map((p) => (
+          <ProjectNode
+            code={p.code}
+            name={p.name}
+            title={p.title.en}
+            description={p.description.en}
+            status={p.status}
+            statusLabel={t(locale, `common.${p.status}`)}
+            timeline={p.timeline}
+            budget={p.budget}
+            euIncentive={p.euIncentive}
+            partners={p.partners}
+            featured={p.featured}
+            partnersLabel={t(locale, 'common.partners')}
+            budgetLabel={t(locale, 'common.budget')}
+            timelineLabel={t(locale, 'common.timeline')}
+          />
+        ))}
+      </div>
+    </Section>
+
+    <BotanicalDivider variant={5} />
+
+    <!-- Team -->
+    <Section id="team" kicker={t(locale, 'sections.equipa.kicker')} title={t(locale, 'sections.equipa.title')} alt>
+      <div class="team-grid">
+        {team.map((m) => (
+          <TeamMember
+            code={m.code}
+            name={m.name}
+            role={m.role.en}
+            institution={m.institution}
+            education={m.education}
+            orcid={m.orcid}
+            expertise={m.expertise.map(e => e.en)}
+          />
+        ))}
+      </div>
+    </Section>
+
+    <BotanicalDivider variant={6} />
+
+    <!-- Awards -->
+    <Section id="awards" kicker={t(locale, 'sections.premios.kicker')} title={t(locale, 'sections.premios.title')}>
+      <div class="awards-grid">
+        {awards.map((a) => (
+          <article class="card">
+            <h3 class="award-name">{a.name.en}</h3>
+            <p class="award-org">{a.organization}</p>
+            <p class="award-desc">{a.description.en}</p>
+          </article>
+        ))}
+      </div>
+    </Section>
+
+    <!-- Assets -->
+    <Section id="assets" kicker={t(locale, 'sections.patrimonio.kicker')} title={t(locale, 'sections.patrimonio.title')} alt>
+      <div class="assets-list">
+        {assets.map((a) => (
+          <div class="asset-item">
+            <h4 class="asset-name">{a.name}</h4>
+            <p class="asset-desc">{a.description.en}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <!-- Compete 2030 -->
+    <Section id="compete2030" kicker={t(locale, 'sections.compete2030.kicker')} title={t(locale, 'sections.compete2030.title')}>
+      <article class="card compete-card">
+        <span class="specimen-code">PRJ.01</span>
+        <h3>AgAPP-e — SUS2022-020</h3>
+        <p class="compete-subtitle">Digital Analyser of Agricultural Production for Phosphorus Efficiency</p>
+        <dl class="compete-details">
+          <div class="compete-row">
+            <dt>Total Project Cost</dt>
+            <dd>&euro; 982.833,99</dd>
+          </div>
+          <div class="compete-row">
+            <dt>EU Financial Support</dt>
+            <dd>&euro; 612.820,49</dd>
+          </div>
+          <div class="compete-row">
+            <dt>Operation</dt>
+            <dd>COMPETE2030-FEDER-01399900 / LISBOA2030-FEDER-01399900</dd>
+          </div>
+        </dl>
+        <div class="compete-downloads">
+          <DownloadButton href="/docs/agapp-e-cartaz.pdf" label="Project Poster" />
+          <DownloadButton href="/docs/agapp-e-ficha-operacao.pdf" label="Operation Sheet" />
+        </div>
+      </article>
+    </Section>
+
+    <BotanicalDivider variant={7} />
+
+    <!-- Contact -->
+    <Section id="contact" kicker={t(locale, 'sections.contacto.kicker')} title={t(locale, 'sections.contacto.title')} alt>
+      <div class="contact-grid">
+        <div class="contact-address">
+          <h4>{t(locale, 'contact.lab')}</h4>
+          <address>
+            Tec Labs — Centro de Inovação<br>
+            Faculdade de Ciências, Universidade de Lisboa<br>
+            1749-016 Lisboa, Portugal
+          </address>
+        </div>
+        <div class="contact-address">
+          <h4>{t(locale, 'contact.registered')}</h4>
+          <address>
+            Rua Espírito Santo, nº 18<br>
+            6060-071 Idanha-a-Nova<br>
+            Castelo Branco, Portugal
+          </address>
+        </div>
+      </div>
+      <p class="contact-rhizologic">
+        <a href="https://rhizologic.com" target="_blank" rel="noopener">{t(locale, 'footer.visitRhizologic')}</a>
+      </p>
+    </Section>
+  </main>
+
+  <Footer locale={locale} />
+</BaseLayout>
+
+<style>
+  .hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-20) var(--grid-margin);
+    position: relative;
+    background: var(--bg);
+  }
+
+  .hero-content { max-width: 700px; }
+
+  .hero-logo {
+    font-family: var(--f-display);
+    font-size: var(--text-display);
+    font-weight: 400;
+    color: var(--txt-1);
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--space-4);
+  }
+
+  .hero-subtitle {
+    font-family: var(--f-body);
+    font-size: var(--text-body-lg);
+    color: var(--accent-mid);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-credentials {
+    font-family: var(--f-mono);
+    font-size: var(--text-body-sm);
+    color: var(--txt-3);
+    letter-spacing: 0.03em;
+    margin: 0;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: var(--space-8);
+    color: var(--txt-3);
+    transition: color var(--duration-fast) var(--ease-out);
+    animation: gentle-bounce 2s ease-in-out infinite;
+  }
+
+  .hero-scroll:hover { color: var(--accent-mid); }
+
+  @keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  .about-grid { display: grid; gap: var(--space-8); }
+  @media (min-width: 768px) { .about-grid { grid-template-columns: 2fr 1fr; } }
+
+  .about-text p { color: var(--txt-2); line-height: 1.75; }
+  .about-text strong { color: var(--txt-1); }
+
+  .facts-list { display: flex; flex-direction: column; gap: var(--space-4); }
+
+  .fact {
+    display: flex; flex-direction: column; gap: var(--space-1);
+    padding-bottom: var(--space-3); border-bottom: 1px solid var(--hairline);
+  }
+  .fact:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .fact dt {
+    font-family: var(--f-mono); font-size: var(--text-micro);
+    color: var(--txt-3); text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  .fact dd {
+    font-size: var(--text-body); color: var(--txt-1);
+    font-weight: 500; margin: 0;
+  }
+
+  .services-grid { display: grid; gap: var(--space-6); }
+  @media (min-width: 768px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .products-grid { display: grid; gap: var(--space-6); }
+  @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .timeline {
+    position: relative; display: flex;
+    flex-direction: column; gap: var(--space-6);
+  }
+
+  .timeline-line {
+    position: absolute; left: 11px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent-light), var(--hairline));
+    z-index: 0;
+  }
+
+  .team-grid { display: grid; gap: var(--space-10); justify-items: center; }
+  @media (min-width: 768px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .awards-grid { display: grid; gap: var(--space-6); }
+  @media (min-width: 768px) { .awards-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .award-name { font-family: var(--f-display); font-size: var(--text-h3); color: var(--specimen); margin: 0 0 var(--space-1); }
+  .award-org { font-family: var(--f-mono); font-size: var(--text-micro); color: var(--txt-3); text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 var(--space-3); }
+  .award-desc { color: var(--txt-2); font-size: var(--text-body-sm); margin: 0; }
+
+  .assets-list { display: flex; flex-direction: column; gap: var(--space-6); }
+  .asset-item { padding-bottom: var(--space-6); border-bottom: 1px solid var(--hairline); }
+  .asset-item:last-child { border-bottom: none; }
+  .asset-name { font-family: var(--f-display); font-size: var(--text-h3); color: var(--txt-1); margin: 0 0 var(--space-2); }
+  .asset-desc { color: var(--txt-2); font-size: var(--text-body); margin: 0; }
+
+  .compete-card { max-width: 700px; }
+  .compete-card h3 { font-family: var(--f-display); font-size: var(--text-h2); color: var(--accent); margin: var(--space-2) 0; }
+  .compete-subtitle { font-size: var(--text-body); color: var(--txt-2); font-style: italic; margin: 0 0 var(--space-6); }
+  .compete-details { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-6); }
+  .compete-row { display: flex; flex-direction: column; gap: var(--space-1); padding-bottom: var(--space-3); border-bottom: 1px solid var(--hairline); }
+  .compete-row:last-child { border-bottom: none; }
+  .compete-row dt { font-family: var(--f-mono); font-size: var(--text-micro); color: var(--txt-3); text-transform: uppercase; letter-spacing: 0.05em; }
+  .compete-row dd { font-size: var(--text-body); color: var(--txt-1); font-weight: 600; margin: 0; }
+  .compete-downloads { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+
+  .contact-grid { display: grid; gap: var(--space-8); margin-bottom: var(--space-6); }
+  @media (min-width: 768px) { .contact-grid { grid-template-columns: repeat(2, 1fr); } }
+  .contact-address h4 { font-family: var(--f-mono); font-size: var(--text-label); color: var(--txt-3); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--space-3); }
+  .contact-address address { font-style: normal; color: var(--txt-2); line-height: 1.8; }
+  .contact-rhizologic { margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--hairline); }
+  .contact-rhizologic a { font-size: var(--text-body-sm); color: var(--accent-mid); }
+</style>

@@ -1,0 +1,24 @@
+---
+interface Props {
+  id: string;
+  kicker?: string;
+  title: string;
+  alt?: boolean;
+}
+
+const { id, kicker, title, alt = false } = Astro.props;
+---
+
+<section id={id} class:list={['section', { 'section--alt': alt }]}>
+  <div class="container">
+    {kicker && <p class="kicker">{kicker}</p>}
+    <h2 class="section__title">{title}</h2>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section__title {
+    margin-bottom: var(--space-8);
+  }
+</style>

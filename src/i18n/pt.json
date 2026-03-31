@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "sobre": "Sobre",
+    "servicos": "Serviços",
+    "produtos": "Produtos",
+    "investigacao": "Investigação",
+    "equipa": "Equipa",
+    "premios": "Prémios",
+    "contacto": "Contacto"
+  },
+  "hero": {
+    "subtitle": "Laboratório de Investigação em Micologia",
+    "credentials": "Est. 2014 · Tec Labs, Universidade de Lisboa · 8 Projetos I&D",
+    "scroll": "Explorar"
+  },
+  "sections": {
+    "sobre": { "kicker": "Sobre Nós", "title": "Ciência ao Serviço da Terra" },
+    "servicos": { "kicker": "Serviços", "title": "Instrumentos de Análise" },
+    "produtos": { "kicker": "Produtos", "title": "Soluções Biológicas" },
+    "investigacao": { "kicker": "Investigação", "title": "Projetos de I&D" },
+    "equipa": { "kicker": "Equipa", "title": "Investigadores" },
+    "premios": { "kicker": "Reconhecimento", "title": "Prémios e Distinções" },
+    "patrimonio": { "kicker": "Património", "title": "Infraestrutura Laboratorial" },
+    "compete2030": { "kicker": "Compete 2030", "title": "Cofinanciamento Europeu" },
+    "contacto": { "kicker": "Contacto", "title": "Fale Connosco" }
+  },
+  "footer": {
+    "copyright": "Lost in Cloud, Lda. Todos os direitos reservados.",
+    "privacy": "Política de Privacidade",
+    "tagline": "Biotecnologia ao serviço da agricultura sustentável",
+    "visitRhizologic": "Visite rhizologic.com para a experiência imersiva de investigação"
+  },
+  "lang": {
+    "current": "PT",
+    "switch": "EN",
+    "switchLabel": "English version"
+  },
+  "contact": {
+    "lab": "Laboratório",
+    "registered": "Sede",
+    "phone": "Telefone",
+    "email": "Email"
+  },
+  "common": {
+    "learnMore": "Saber mais",
+    "download": "Descarregar",
+    "active": "Ativo",
+    "completed": "Concluído",
+    "development": "Em Desenvolvimento",
+    "partners": "Parceiros",
+    "budget": "Orçamento",
+    "timeline": "Período",
+    "contactForQuote": "Contacte-nos para orçamento"
+  }
+}
