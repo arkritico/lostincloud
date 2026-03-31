@@ -8,128 +8,227 @@ const { variant } = Astro.props;
 
 <div class="botanical-divider" role="separator" aria-hidden="true">
   {variant === 1 && (
-    <!-- Spore print — radial dots from center -->
-    <svg viewBox="0 0 400 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {[...Array(24)].map((_, i) => {
-        const angle = (i / 24) * Math.PI * 2;
-        const r1 = 12;
-        const r2 = 22;
-        const cx1 = 200 + Math.cos(angle) * r1;
-        const cy1 = 30 + Math.sin(angle) * r1;
-        const cx2 = 200 + Math.cos(angle) * r2;
-        const cy2 = 30 + Math.sin(angle) * r2;
-        return (
-          <>
-            <circle cx={cx1} cy={cy1} r="1.2" fill="currentColor" />
-            <circle cx={cx2} cy={cy2} r="0.8" fill="currentColor" opacity="0.6" />
-          </>
-        );
+    <!-- Spore print — radial pattern of dots emanating from center, like a real Agaricus spore print -->
+    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Central cap impression -->
+      <circle cx="200" cy="40" r="3" fill="currentColor" opacity="0.6" />
+      <!-- Inner ring of spores -->
+      {[...Array(16)].map((_, i) => {
+        const a = (i / 16) * Math.PI * 2;
+        return <circle cx={200 + Math.cos(a) * 8} cy={40 + Math.sin(a) * 8} r="1.4" fill="currentColor" opacity="0.55" />;
       })}
-      <circle cx="200" cy="30" r="2" fill="currentColor" />
+      <!-- Middle ring -->
+      {[...Array(24)].map((_, i) => {
+        const a = (i / 24) * Math.PI * 2 + 0.13;
+        return <circle cx={200 + Math.cos(a) * 16} cy={40 + Math.sin(a) * 16} r="1.1" fill="currentColor" opacity="0.4" />;
+      })}
+      <!-- Outer ring -->
+      {[...Array(32)].map((_, i) => {
+        const a = (i / 32) * Math.PI * 2 + 0.07;
+        return <circle cx={200 + Math.cos(a) * 25} cy={40 + Math.sin(a) * 25} r="0.8" fill="currentColor" opacity="0.25" />;
+      })}
+      <!-- Scattered outermost -->
+      {[...Array(20)].map((_, i) => {
+        const a = (i / 20) * Math.PI * 2 + 0.3;
+        const r = 30 + (i % 3) * 3;
+        return <circle cx={200 + Math.cos(a) * r} cy={40 + Math.sin(a) * r} r="0.5" fill="currentColor" opacity="0.15" />;
+      })}
+      <!-- Radial gill lines (very subtle) -->
       {[...Array(12)].map((_, i) => {
-        const angle = (i / 12) * Math.PI * 2 + 0.13;
-        const cx = 200 + Math.cos(angle) * 28;
-        const cy = 30 + Math.sin(angle) * 28;
-        return <circle cx={cx} cy={cy} r="0.5" fill="currentColor" opacity="0.35" />;
+        const a = (i / 12) * Math.PI * 2;
+        return <line x1={200 + Math.cos(a) * 4} y1={40 + Math.sin(a) * 4} x2={200 + Math.cos(a) * 20} y2={40 + Math.sin(a) * 20} stroke="currentColor" stroke-width="0.2" opacity="0.12" />;
       })}
     </svg>
   )}
 
   {variant === 2 && (
-    <!-- Mycelium branching — organic branching lines -->
-    <svg viewBox="0 0 400 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M120 30 Q160 28 200 30 Q240 32 280 30" stroke="currentColor" stroke-width="0.8" />
-      <path d="M155 30 Q165 18 180 12" stroke="currentColor" stroke-width="0.6" opacity="0.7" />
-      <path d="M175 30 Q180 38 195 44" stroke="currentColor" stroke-width="0.6" opacity="0.7" />
-      <path d="M210 30 Q220 20 235 16" stroke="currentColor" stroke-width="0.6" opacity="0.7" />
-      <path d="M230 30 Q238 40 250 46" stroke="currentColor" stroke-width="0.6" opacity="0.7" />
-      <path d="M180 12 Q188 8 196 10" stroke="currentColor" stroke-width="0.4" opacity="0.45" />
-      <path d="M195 44 Q202 48 212 46" stroke="currentColor" stroke-width="0.4" opacity="0.45" />
-      <path d="M235 16 Q242 10 252 12" stroke="currentColor" stroke-width="0.4" opacity="0.45" />
-      <path d="M250 46 Q258 50 268 48" stroke="currentColor" stroke-width="0.4" opacity="0.45" />
-      <circle cx="180" cy="12" r="1.5" fill="currentColor" opacity="0.5" />
-      <circle cx="195" cy="44" r="1.5" fill="currentColor" opacity="0.5" />
-      <circle cx="235" cy="16" r="1.5" fill="currentColor" opacity="0.5" />
-      <circle cx="250" cy="46" r="1.5" fill="currentColor" opacity="0.5" />
+    <!-- Mycelium branching — fractal-like organic network, L-system inspired -->
+    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Main trunk -->
+      <path d="M140 40 C160 38 180 42 200 40 C220 38 240 42 260 40" stroke="currentColor" stroke-width="1" opacity="0.6" />
+      <!-- Primary branches up -->
+      <path d="M165 40 C168 32 175 24 185 18" stroke="currentColor" stroke-width="0.7" opacity="0.5" />
+      <path d="M210 40 C215 30 222 22 232 16" stroke="currentColor" stroke-width="0.7" opacity="0.5" />
+      <path d="M248 40 C252 34 258 28 265 24" stroke="currentColor" stroke-width="0.6" opacity="0.45" />
+      <!-- Primary branches down -->
+      <path d="M178 40 C182 48 188 54 198 60" stroke="currentColor" stroke-width="0.7" opacity="0.5" />
+      <path d="M225 40 C228 50 234 56 242 62" stroke="currentColor" stroke-width="0.6" opacity="0.45" />
+      <!-- Secondary branches (smaller) -->
+      <path d="M185 18 C190 14 196 12 202 14" stroke="currentColor" stroke-width="0.4" opacity="0.3" />
+      <path d="M185 18 C180 12 178 8 180 4" stroke="currentColor" stroke-width="0.35" opacity="0.25" />
+      <path d="M232 16 C238 12 244 14 248 18" stroke="currentColor" stroke-width="0.4" opacity="0.3" />
+      <path d="M232 16 C228 10 230 6 234 4" stroke="currentColor" stroke-width="0.35" opacity="0.25" />
+      <path d="M198 60 C204 64 210 62 214 58" stroke="currentColor" stroke-width="0.4" opacity="0.3" />
+      <path d="M198 60 C194 66 196 72 200 76" stroke="currentColor" stroke-width="0.35" opacity="0.25" />
+      <path d="M242 62 C248 66 254 64 258 60" stroke="currentColor" stroke-width="0.35" opacity="0.25" />
+      <path d="M265 24 C270 20 276 22 280 26" stroke="currentColor" stroke-width="0.35" opacity="0.25" />
+      <!-- Tertiary tips -->
+      <path d="M202 14 C206 10 210 12 212 16" stroke="currentColor" stroke-width="0.25" opacity="0.18" />
+      <path d="M248 18 C254 22 258 20 260 16" stroke="currentColor" stroke-width="0.25" opacity="0.18" />
+      <path d="M214 58 C218 54 222 56 224 60" stroke="currentColor" stroke-width="0.25" opacity="0.18" />
+      <!-- Hyphal tip vesicles -->
+      <circle cx="180" cy="4" r="1.2" fill="currentColor" opacity="0.2" />
+      <circle cx="234" cy="4" r="1.2" fill="currentColor" opacity="0.2" />
+      <circle cx="200" cy="76" r="1" fill="currentColor" opacity="0.18" />
+      <circle cx="280" cy="26" r="1" fill="currentColor" opacity="0.18" />
+      <!-- Anastomosis connections -->
+      <path d="M152 40 C148 34 142 32 138 36" stroke="currentColor" stroke-width="0.3" opacity="0.2" stroke-dasharray="1.5 2" />
     </svg>
   )}
 
   {variant === 3 && (
-    <!-- Root cross-section — concentric rings -->
-    <svg viewBox="0 0 400 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="200" cy="30" r="4" stroke="currentColor" stroke-width="1" />
-      <circle cx="200" cy="30" r="10" stroke="currentColor" stroke-width="0.6" opacity="0.7" />
-      <circle cx="200" cy="30" r="17" stroke="currentColor" stroke-width="0.5" opacity="0.5" />
-      <circle cx="200" cy="30" r="24" stroke="currentColor" stroke-width="0.4" opacity="0.35" />
-      <line x1="120" y1="30" x2="176" y2="30" stroke="currentColor" stroke-width="0.3" opacity="0.25" />
-      <line x1="224" y1="30" x2="280" y2="30" stroke="currentColor" stroke-width="0.3" opacity="0.25" />
+    <!-- Root cross-section — xylem star with cortex layers, like a real dicot root -->
+    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Epidermis -->
+      <circle cx="200" cy="40" r="32" stroke="currentColor" stroke-width="0.4" opacity="0.2" />
+      <!-- Cortex -->
+      <circle cx="200" cy="40" r="26" stroke="currentColor" stroke-width="0.4" opacity="0.25" />
+      <!-- Endodermis (Casparian strip) -->
+      <circle cx="200" cy="40" r="20" stroke="currentColor" stroke-width="0.7" opacity="0.4" stroke-dasharray="2 1.5" />
+      <!-- Pericycle -->
+      <circle cx="200" cy="40" r="16" stroke="currentColor" stroke-width="0.5" opacity="0.35" />
+      <!-- Xylem star (pentarch pattern — typical of roots) -->
+      {[...Array(5)].map((_, i) => {
+        const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
+        return <line x1="200" y1="40" x2={200 + Math.cos(a) * 14} y2={40 + Math.sin(a) * 14} stroke="currentColor" stroke-width="1.2" opacity="0.5" />;
+      })}
+      <!-- Phloem (between xylem arms) -->
+      {[...Array(5)].map((_, i) => {
+        const a = (i / 5) * Math.PI * 2 - Math.PI / 2 + Math.PI / 5;
+        return <circle cx={200 + Math.cos(a) * 10} cy={40 + Math.sin(a) * 10} r="2.5" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3" />;
+      })}
+      <!-- Pith -->
+      <circle cx="200" cy="40" r="3" fill="currentColor" opacity="0.15" />
+      <!-- Root hairs extending from epidermis -->
+      {[...Array(8)].map((_, i) => {
+        const a = (i / 8) * Math.PI * 2 + 0.2;
+        return <line x1={200 + Math.cos(a) * 32} y1={40 + Math.sin(a) * 32} x2={200 + Math.cos(a) * 38} y2={40 + Math.sin(a) * 38} stroke="currentColor" stroke-width="0.3" opacity="0.15" />;
+      })}
+      <!-- Decorative horizontal lines extending outward -->
+      <line x1="120" y1="40" x2="166" y2="40" stroke="currentColor" stroke-width="0.3" opacity="0.12" />
+      <line x1="234" y1="40" x2="280" y2="40" stroke="currentColor" stroke-width="0.3" opacity="0.12" />
     </svg>
   )}
 
   {variant === 4 && (
-    <!-- Hyphal network — connected nodes -->
-    <svg viewBox="0 0 400 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="160" cy="22" r="2.5" fill="currentColor" opacity="0.5" />
-      <circle cx="190" cy="40" r="2" fill="currentColor" opacity="0.5" />
-      <circle cx="220" cy="18" r="2.5" fill="currentColor" opacity="0.5" />
-      <circle cx="240" cy="42" r="2" fill="currentColor" opacity="0.5" />
-      <circle cx="200" cy="30" r="3" fill="currentColor" opacity="0.65" />
-      <line x1="160" y1="22" x2="200" y2="30" stroke="currentColor" stroke-width="0.5" opacity="0.4" />
-      <line x1="190" y1="40" x2="200" y2="30" stroke="currentColor" stroke-width="0.5" opacity="0.4" />
-      <line x1="220" y1="18" x2="200" y2="30" stroke="currentColor" stroke-width="0.5" opacity="0.4" />
-      <line x1="240" y1="42" x2="200" y2="30" stroke="currentColor" stroke-width="0.5" opacity="0.4" />
-      <line x1="160" y1="22" x2="190" y2="40" stroke="currentColor" stroke-width="0.3" opacity="0.25" />
-      <line x1="220" y1="18" x2="240" y2="42" stroke="currentColor" stroke-width="0.3" opacity="0.25" />
-      <circle cx="140" cy="32" r="1.5" fill="currentColor" opacity="0.3" />
-      <circle cx="260" cy="26" r="1.5" fill="currentColor" opacity="0.3" />
-      <line x1="140" y1="32" x2="160" y2="22" stroke="currentColor" stroke-width="0.3" opacity="0.2" />
-      <line x1="260" y1="26" x2="240" y2="42" stroke="currentColor" stroke-width="0.3" opacity="0.2" />
+    <!-- Hyphal network — mycorrhizal web connecting root tips, AMF vesicles and arbuscules -->
+    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Network nodes (root tips / hyphal junctions) -->
+      <circle cx="148" cy="28" r="3.5" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.35" />
+      <circle cx="200" cy="40" r="4" stroke="currentColor" stroke-width="0.8" fill="none" opacity="0.45" />
+      <circle cx="252" cy="32" r="3.5" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.35" />
+      <circle cx="175" cy="56" r="3" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3" />
+      <circle cx="228" cy="18" r="3" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3" />
+      <!-- Hyphae connections (curved organic lines) -->
+      <path d="M151 30 C165 35 185 38 196 40" stroke="currentColor" stroke-width="0.6" opacity="0.35" />
+      <path d="M204 40 C218 38 238 34 249 32" stroke="currentColor" stroke-width="0.6" opacity="0.35" />
+      <path d="M198 44 C190 50 182 54 178 56" stroke="currentColor" stroke-width="0.5" opacity="0.3" />
+      <path d="M202 36 C210 28 220 22 225 18" stroke="currentColor" stroke-width="0.5" opacity="0.3" />
+      <path d="M150 26 C165 18 210 16 225 18" stroke="currentColor" stroke-width="0.35" opacity="0.2" />
+      <path d="M178 56 C200 62 230 52 252 35" stroke="currentColor" stroke-width="0.35" opacity="0.2" />
+      <!-- AMF vesicles (small filled circles along hyphae) -->
+      <circle cx="168" cy="34" r="1.5" fill="currentColor" opacity="0.25" />
+      <circle cx="185" cy="37" r="1.2" fill="currentColor" opacity="0.2" />
+      <circle cx="215" cy="36" r="1.5" fill="currentColor" opacity="0.25" />
+      <circle cx="238" cy="34" r="1.2" fill="currentColor" opacity="0.2" />
+      <circle cx="192" cy="50" r="1" fill="currentColor" opacity="0.18" />
+      <circle cx="212" cy="24" r="1" fill="currentColor" opacity="0.18" />
+      <!-- Outer satellite nodes -->
+      <circle cx="128" cy="42" r="2" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.2" />
+      <circle cx="272" cy="48" r="2" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.2" />
+      <path d="M130 40 C138 36 144 30 148 28" stroke="currentColor" stroke-width="0.3" opacity="0.15" />
+      <path d="M255 34 C262 40 268 46 270 48" stroke="currentColor" stroke-width="0.3" opacity="0.15" />
     </svg>
   )}
 
   {variant === 5 && (
-    <!-- Spore dispersal — wind-blown dots -->
-    <svg viewBox="0 0 400 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="170" cy="30" r="2.5" fill="currentColor" opacity="0.7" />
-      <circle cx="185" cy="26" r="1.8" fill="currentColor" opacity="0.55" />
-      <circle cx="202" cy="32" r="1.3" fill="currentColor" opacity="0.45" />
-      <circle cx="218" cy="24" r="1" fill="currentColor" opacity="0.35" />
-      <circle cx="232" cy="34" r="0.8" fill="currentColor" opacity="0.28" />
-      <circle cx="248" cy="28" r="0.6" fill="currentColor" opacity="0.2" />
-      <circle cx="262" cy="36" r="0.5" fill="currentColor" opacity="0.15" />
-      <path d="M160 30 Q190 22 230 28 Q260 32 280 26" stroke="currentColor" stroke-width="0.3" opacity="0.2" stroke-dasharray="2 4" />
-      <circle cx="195" cy="42" r="0.7" fill="currentColor" opacity="0.3" />
-      <circle cx="215" cy="16" r="0.6" fill="currentColor" opacity="0.25" />
-      <circle cx="240" cy="44" r="0.5" fill="currentColor" opacity="0.18" />
+    <!-- Spore dispersal — basidiospores carried by wind, Brownian trajectories -->
+    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Basidium source (left) -->
+      <path d="M148 40 L148 28" stroke="currentColor" stroke-width="1" opacity="0.5" />
+      <circle cx="144" cy="26" r="2" fill="currentColor" opacity="0.4" />
+      <circle cx="148" cy="24" r="2" fill="currentColor" opacity="0.4" />
+      <circle cx="152" cy="26" r="2" fill="currentColor" opacity="0.4" />
+      <circle cx="148" cy="22" r="2" fill="currentColor" opacity="0.4" />
+      <!-- Wind trajectory (dashed, organic curve) -->
+      <path d="M156 26 C180 18 220 32 260 22 C280 18 300 24 320 20" stroke="currentColor" stroke-width="0.3" opacity="0.12" stroke-dasharray="3 5" />
+      <!-- Dispersing spores — getting smaller and fainter with distance -->
+      <circle cx="164" cy="24" r="2.2" fill="currentColor" opacity="0.5" />
+      <circle cx="178" cy="20" r="1.8" fill="currentColor" opacity="0.4" />
+      <circle cx="194" cy="28" r="1.5" fill="currentColor" opacity="0.35" />
+      <circle cx="210" cy="22" r="1.3" fill="currentColor" opacity="0.28" />
+      <circle cx="224" cy="30" r="1.1" fill="currentColor" opacity="0.22" />
+      <circle cx="240" cy="24" r="0.9" fill="currentColor" opacity="0.18" />
+      <circle cx="256" cy="28" r="0.7" fill="currentColor" opacity="0.14" />
+      <circle cx="272" cy="22" r="0.6" fill="currentColor" opacity="0.11" />
+      <!-- Brownian scatter (off-trajectory spores) -->
+      <circle cx="170" cy="36" r="1" fill="currentColor" opacity="0.2" />
+      <circle cx="186" cy="14" r="0.8" fill="currentColor" opacity="0.16" />
+      <circle cx="205" cy="38" r="0.9" fill="currentColor" opacity="0.15" />
+      <circle cx="218" cy="12" r="0.7" fill="currentColor" opacity="0.12" />
+      <circle cx="235" cy="36" r="0.6" fill="currentColor" opacity="0.1" />
+      <circle cx="250" cy="16" r="0.5" fill="currentColor" opacity="0.08" />
+      <!-- Settled spores (bottom) -->
+      <circle cx="190" cy="58" r="0.8" fill="currentColor" opacity="0.12" />
+      <circle cx="220" cy="62" r="0.6" fill="currentColor" opacity="0.1" />
+      <circle cx="245" cy="56" r="0.5" fill="currentColor" opacity="0.08" />
     </svg>
   )}
 
   {variant === 6 && (
-    <!-- Substrate layers — wavy horizontal strata -->
-    <svg viewBox="0 0 400 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M130 18 Q165 14 200 18 Q235 22 270 18" stroke="currentColor" stroke-width="0.6" opacity="0.35" />
-      <path d="M120 28 Q160 24 200 28 Q240 32 280 28" stroke="currentColor" stroke-width="0.8" opacity="0.55" />
-      <path d="M125 38 Q162 42 200 38 Q238 34 275 38" stroke="currentColor" stroke-width="0.6" opacity="0.45" />
-      <path d="M135 48 Q167 44 200 48 Q233 52 265 48" stroke="currentColor" stroke-width="0.4" opacity="0.3" />
-      <circle cx="200" cy="28" r="1" fill="currentColor" opacity="0.4" />
-      <circle cx="180" cy="38" r="0.6" fill="currentColor" opacity="0.3" />
-      <circle cx="222" cy="18" r="0.6" fill="currentColor" opacity="0.25" />
+    <!-- Substrate layers — soil horizon cross-section with organic matter particles -->
+    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- O horizon (organic layer) -->
+      <path d="M120 16 C140 13 160 18 180 15 C200 12 220 17 240 14 C260 11 280 16 300 14" stroke="currentColor" stroke-width="0.5" opacity="0.25" />
+      <!-- A horizon (topsoil) -->
+      <path d="M115 28 C138 24 162 30 185 26 C208 22 232 28 255 24 C278 20 298 26 310 24" stroke="currentColor" stroke-width="0.8" opacity="0.45" />
+      <!-- B horizon (subsoil) -->
+      <path d="M118 42 C142 46 166 40 190 44 C214 48 238 42 262 46 C286 50 304 44 310 46" stroke="currentColor" stroke-width="0.6" opacity="0.35" />
+      <!-- C horizon (parent material) -->
+      <path d="M122 56 C148 60 172 54 200 58 C228 62 252 56 278 60" stroke="currentColor" stroke-width="0.4" opacity="0.2" />
+      <!-- R horizon hint (bedrock) -->
+      <path d="M130 68 C158 72 182 66 210 70 C238 74 262 68 270 70" stroke="currentColor" stroke-width="0.3" opacity="0.12" />
+      <!-- Organic matter particles in O/A horizons -->
+      <circle cx="155" cy="20" r="0.8" fill="currentColor" opacity="0.2" />
+      <circle cx="195" cy="16" r="0.6" fill="currentColor" opacity="0.15" />
+      <circle cx="235" cy="18" r="0.7" fill="currentColor" opacity="0.18" />
+      <circle cx="170" cy="28" r="1" fill="currentColor" opacity="0.25" />
+      <circle cx="210" cy="26" r="0.9" fill="currentColor" opacity="0.22" />
+      <circle cx="250" cy="30" r="0.8" fill="currentColor" opacity="0.2" />
+      <!-- Roots crossing horizons -->
+      <path d="M200 16 C198 22 202 30 200 38 C198 44 196 50 198 56" stroke="currentColor" stroke-width="0.35" opacity="0.15" />
+      <path d="M240 18 C238 26 242 34 240 42" stroke="currentColor" stroke-width="0.25" opacity="0.12" />
     </svg>
   )}
 
   {variant === 7 && (
-    <!-- Root system — downward branching -->
-    <svg viewBox="0 0 400 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M200 6 L200 30" stroke="currentColor" stroke-width="0.9" />
-      <path d="M200 20 Q185 28 175 40" stroke="currentColor" stroke-width="0.7" opacity="0.7" />
-      <path d="M200 20 Q215 28 225 40" stroke="currentColor" stroke-width="0.7" opacity="0.7" />
-      <path d="M200 30 Q190 38 182 50" stroke="currentColor" stroke-width="0.5" opacity="0.5" />
-      <path d="M200 30 Q210 38 218 50" stroke="currentColor" stroke-width="0.5" opacity="0.5" />
-      <path d="M175 40 Q168 46 162 54" stroke="currentColor" stroke-width="0.4" opacity="0.35" />
-      <path d="M225 40 Q232 46 238 54" stroke="currentColor" stroke-width="0.4" opacity="0.35" />
-      <path d="M175 40 Q172 48 174 56" stroke="currentColor" stroke-width="0.3" opacity="0.25" />
-      <path d="M225 40 Q228 48 226 56" stroke="currentColor" stroke-width="0.3" opacity="0.25" />
-      <circle cx="200" cy="6" r="2" fill="currentColor" opacity="0.5" />
+    <!-- Root system — full taproot with laterals, root hairs, and mycorrhizal associations -->
+    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Soil line -->
+      <line x1="150" y1="8" x2="250" y2="8" stroke="currentColor" stroke-width="0.4" opacity="0.15" />
+      <!-- Taproot -->
+      <path d="M200 8 C200 20 199 35 200 50 C201 60 200 70 200 78" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+      <!-- Primary laterals -->
+      <path d="M200 18 C188 22 175 28 162 34" stroke="currentColor" stroke-width="0.8" opacity="0.4" />
+      <path d="M200 18 C212 22 225 28 238 34" stroke="currentColor" stroke-width="0.8" opacity="0.4" />
+      <path d="M200 32 C190 38 178 44 168 50" stroke="currentColor" stroke-width="0.7" opacity="0.35" />
+      <path d="M200 32 C210 38 222 44 232 50" stroke="currentColor" stroke-width="0.7" opacity="0.35" />
+      <path d="M200 48 C192 54 184 60 178 66" stroke="currentColor" stroke-width="0.6" opacity="0.3" />
+      <path d="M200 48 C208 54 216 60 222 66" stroke="currentColor" stroke-width="0.6" opacity="0.3" />
+      <!-- Secondary laterals -->
+      <path d="M180 26 C174 30 168 28 164 32" stroke="currentColor" stroke-width="0.4" opacity="0.22" />
+      <path d="M220 26 C226 30 232 28 236 32" stroke="currentColor" stroke-width="0.4" opacity="0.22" />
+      <path d="M185 42 C180 46 174 44 170 48" stroke="currentColor" stroke-width="0.35" opacity="0.2" />
+      <path d="M215 42 C220 46 226 44 230 48" stroke="currentColor" stroke-width="0.35" opacity="0.2" />
+      <path d="M190 56 C186 60 180 58 176 62" stroke="currentColor" stroke-width="0.3" opacity="0.18" />
+      <path d="M210 56 C214 60 220 58 224 62" stroke="currentColor" stroke-width="0.3" opacity="0.18" />
+      <!-- Root hairs (tiny lines) -->
+      <line x1="162" y1="34" x2="156" y2="32" stroke="currentColor" stroke-width="0.2" opacity="0.12" />
+      <line x1="162" y1="34" x2="158" y2="38" stroke="currentColor" stroke-width="0.2" opacity="0.12" />
+      <line x1="238" y1="34" x2="244" y2="32" stroke="currentColor" stroke-width="0.2" opacity="0.12" />
+      <line x1="238" y1="34" x2="242" y2="38" stroke="currentColor" stroke-width="0.2" opacity="0.12" />
+      <!-- Root tip (meristem) -->
+      <ellipse cx="200" cy="78" rx="2" ry="3" fill="currentColor" opacity="0.25" />
     </svg>
   )}
 </div>
