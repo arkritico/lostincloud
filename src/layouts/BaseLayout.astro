@@ -53,21 +53,14 @@ const structuredData = {
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={ogLocale} />
 
-    <!-- Font preloads -->
-    <link
-      rel="preload"
-      href="/fonts/Newsreader-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/Inter-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <!-- Font preloads (critical weights only) -->
+    <link rel="preload" href="/fonts/newsreader/newsreader-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Font stylesheets -->
+    <link rel="stylesheet" href="/fonts/newsreader/newsreader.css" />
+    <link rel="stylesheet" href="/fonts/inter/inter.css" />
+    <link rel="stylesheet" href="/fonts/jetbrains-mono/jetbrains-mono.css" />
 
     <!-- Styles -->
     <style is:global>
