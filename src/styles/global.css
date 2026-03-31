@@ -262,6 +262,18 @@ a:hover { color: var(--ink); }
 
 img { max-width: 100%; height: auto; display: block; }
 
+/* ── Tall background image (flyover system) ── */
+.bench-bg-tall {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  z-index: 0;
+  will-change: transform, object-position;
+}
+
 /* ── GSAP reveal targets (hidden until animated) ── */
 [data-bench-reveal] {
   opacity: 0;

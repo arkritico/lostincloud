@@ -15,7 +15,7 @@ const { locale } = Astro.props;
   <img
     src="/images/bench/sequence/07-awards.webp"
     alt=""
-    class="bench-bg"
+    class="bench-bg-tall"
     loading="lazy"
     decoding="async"
   />
@@ -63,14 +63,6 @@ const { locale } = Astro.props;
     overflow: hidden;
   }
 
-  .bench-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: var(--z-bench);
-  }
 
   .awards-content {
     position: relative;

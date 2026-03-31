@@ -1,6 +1,7 @@
 ---
-// BenchEngine — Astro island for Lenis smooth scroll + GSAP ScrollTrigger + spotlight cursor
-// Loaded as client:load on the main bench page
+// BenchEngine — Lenis smooth scroll + GSAP ScrollTrigger flyover + spotlight cursor
+// Each .bench-zone has a tall background image that scrolls (object-position scrub)
+// creating the illusion of flying over the bench
 ---
 
 <div class="spotlight" id="spotlight"></div>
@@ -12,17 +13,17 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // === LENIS SMOOTH SCROLL (desktop only) ===
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // === LENIS SMOOTH SCROLL (desktop only) ===
   let lenis: Lenis | null = null;
 
   if (!isMobile && !prefersReducedMotion) {
     lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.6,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 0, // Don't interfere with native touch scroll
+      touchMultiplier: 0,
     });
 
     lenis.on('scroll', ScrollTrigger.update);
@@ -32,74 +33,110 @@
     gsap.ticker.lagSmoothing(0);
   }
 
-  // === SCROLL-DRIVEN REVEALS ===
+  // === FLYOVER: Background image scroll ===
   if (!prefersReducedMotion) {
-    // Reveal bench objects as they enter viewport
-    const revealElements = document.querySelectorAll('[data-bench-reveal]');
+    // Each .bench-bg-tall scrolls its object-position as the zone scrolls through viewport
+    const zones = document.querySelectorAll('.bench-zone');
 
-    revealElements.forEach((el, i) => {
-      const htmlEl = el as HTMLElement;
-      const delay = parseFloat(htmlEl.dataset.benchDelay || '0');
+    zones.forEach((zone) => {
+      const bg = zone.querySelector('.bench-bg-tall') as HTMLElement;
+      if (!bg) return;
 
+      // Scrub the background image from top to bottom
       gsap.fromTo(
-        el,
+        bg,
+        { objectPosition: '50% 0%' },
         {
-          opacity: 0,
-          y: 60,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay,
-          ease: 'back.out(1.4)',
+          objectPosition: '50% 100%',
+          ease: 'none',
           scrollTrigger: {
-            trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+            trigger: zone,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        }
+      );
+
+      // Subtle zoom pulse as zone passes through center
+      gsap.fromTo(
+        bg,
+        { scale: 1.0 },
+        {
+          scale: 1.04,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: zone,
+            start: 'top bottom',
+            end: 'center center',
+            scrub: 0.8,
+          },
+        }
+      );
+      gsap.fromTo(
+        bg,
+        { scale: 1.04 },
+        {
+          scale: 1.0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: zone,
+            start: 'center center',
+            end: 'bottom top',
+            scrub: 0.8,
           },
         }
       );
     });
 
-    // Parallax: background panels scroll slower than content
-    const parallaxPanels = document.querySelectorAll('[data-bench-parallax]');
-    parallaxPanels.forEach((panel) => {
-      const speed = parseFloat((panel as HTMLElement).dataset.benchParallax || '0.15');
-      gsap.to(panel, {
-        yPercent: speed * 100,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: panel,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
+    // === CONTENT REVEALS ===
+    const revealElements = document.querySelectorAll('[data-bench-reveal]');
+
+    revealElements.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      const delay = parseFloat(htmlEl.dataset.benchDelay || '0');
+
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          delay,
+          ease: 'back.out(1.2)',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    });
+  } else {
+    // Reduced motion: show everything, no animation
+    document.querySelectorAll('[data-bench-reveal]').forEach((el) => {
+      (el as HTMLElement).style.opacity = '1';
+      (el as HTMLElement).style.transform = 'none';
     });
   }
 
-  // === SPOTLIGHT CURSOR (desktop only, hover devices) ===
+  // === SPOTLIGHT CURSOR (desktop, hover devices) ===
   const spotlight = document.getElementById('spotlight');
 
   if (spotlight && !isMobile && !prefersReducedMotion) {
-    let mouseX = 0;
-    let mouseY = 0;
-
     document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    gsap.ticker.add(() => {
-      gsap.set(spotlight, {
-        x: mouseX - 200,
-        y: mouseY - 200,
+      gsap.to(spotlight, {
+        x: e.clientX - 200,
+        y: e.clientY - 200,
+        duration: 0.4,
+        ease: 'power2.out',
+        overwrite: 'auto',
       });
     });
   }
 
-  // === ASTRO PAGE LIFECYCLE CLEANUP ===
+  // === CLEANUP ===
   document.addEventListener('astro:before-swap', () => {
     gsap.globalTimeline.clear();
     ScrollTrigger.getAll().forEach((t) => t.kill());
