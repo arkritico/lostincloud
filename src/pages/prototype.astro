@@ -167,60 +167,71 @@
   <script>
     import gsap from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    gsap.registerPlugin(ScrollTrigger);
 
-    const frames = [
-      '/images/bench/sequence/01-hero.webp',
-      '/images/bench/sequence/hero-key-2.webp',
-      '/images/bench/sequence/hero-key-3.webp',
-      '/images/bench/sequence/hero-key-4.webp',
-    ];
+    document.addEventListener('DOMContentLoaded', () => {
+      gsap.registerPlugin(ScrollTrigger);
 
-    const back = document.getElementById('frame-back') as HTMLImageElement;
-    const front = document.getElementById('frame-front') as HTMLImageElement;
-    const counter = document.getElementById('counter')!;
-    const hint = document.getElementById('scroll-hint')!;
-    let currentFrame = 0;
-    let showingFront = true;
+      const frames = [
+        '/images/bench/sequence/01-hero.webp',
+        '/images/bench/sequence/hero-key-2.webp',
+        '/images/bench/sequence/hero-key-3.webp',
+        '/images/bench/sequence/hero-key-4.webp',
+      ];
 
-    // Preload all frames
-    frames.forEach(src => { const img = new Image(); img.src = src; });
+      const back = document.getElementById('frame-back');
+      const front = document.getElementById('frame-front');
+      const counter = document.getElementById('counter');
+      const hint = document.getElementById('scroll-hint');
 
-    ScrollTrigger.create({
-      trigger: '#flyover',
-      start: 'top top',
-      end: 'bottom bottom',
-      onUpdate: (self) => {
-        const frame = Math.min(
-          frames.length - 1,
-          Math.floor(self.progress * frames.length)
-        );
-
-        if (frame !== currentFrame) {
-          currentFrame = frame;
-
-          // Crossfade: load new frame on the hidden layer, then swap opacity
-          if (showingFront) {
-            back.src = frames[frame];
-            front.classList.add('hidden');
-            back.classList.remove('hidden');
-          } else {
-            front.src = frames[frame];
-            back.classList.add('hidden');
-            front.classList.remove('hidden');
-          }
-          showingFront = !showingFront;
-
-          counter.textContent = `F${frame + 1}/4`;
-        }
-
-        // Fade scroll hint
-        if (self.progress > 0.05) {
-          hint.style.opacity = '0';
-        } else {
-          hint.style.opacity = '1';
-        }
+      if (!back || !front || !counter || !hint) {
+        console.error('Flyover: missing DOM elements', { back, front, counter, hint });
+        return;
       }
+
+      let currentFrame = 0;
+      let showingFront = true;
+
+      // Preload all frames
+      frames.forEach(src => { const img = new Image(); img.src = src; });
+
+      console.log('Flyover: ScrollTrigger initializing...');
+
+      ScrollTrigger.create({
+        trigger: '#flyover',
+        start: 'top top',
+        end: 'bottom bottom',
+        markers: true, // DEBUG: show trigger markers
+        onUpdate: (self) => {
+          const frame = Math.min(
+            frames.length - 1,
+            Math.floor(self.progress * frames.length)
+          );
+
+          if (frame !== currentFrame) {
+            currentFrame = frame;
+            console.log('Flyover: switching to frame', frame + 1);
+
+            // Crossfade: load new frame on hidden layer, then swap opacity
+            if (showingFront) {
+              back.setAttribute('src', frames[frame]);
+              front.classList.add('hidden');
+              back.classList.remove('hidden');
+            } else {
+              front.setAttribute('src', frames[frame]);
+              back.classList.add('hidden');
+              front.classList.remove('hidden');
+            }
+            showingFront = !showingFront;
+
+            counter.textContent = 'F' + (frame + 1) + '/4';
+          }
+
+          // Fade scroll hint
+          hint.style.opacity = self.progress > 0.05 ? '0' : '1';
+        }
+      });
+
+      console.log('Flyover: ready');
     });
   </script>
 </body>
