@@ -35,17 +35,29 @@
       overflow: hidden;
     }
 
-    /* Single image — CSS translateY does the continuous pan */
+    .flyover-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
     .flyover-frame {
       position: absolute;
-      /* Oversized: 130% height so translateY has room to move */
-      top: -15%;
+      top: -10%;
       left: 0;
       width: 100%;
-      height: 130%;
+      height: 120%;
       object-fit: cover;
       will-change: transform;
     }
+
+    .flyover-layer--back { z-index: 0; }
+    .flyover-layer--front { z-index: 1; }
+
+    .flyover-layer { transition: opacity 0.3s ease-out; }
+    .flyover-layer.is-hidden { opacity: 0; }
 
     /* Content overlay */
     .flyover-content {
@@ -129,12 +141,13 @@
 <body>
   <div class="flyover" id="flyover">
     <div class="flyover-sticky">
-      <img
-        id="flyover-img"
-        class="flyover-frame"
-        src="/images/bench/sequence/01-hero.webp"
-        alt=""
-      />
+      <!-- Two layers: one pans, the other preloads next frame underneath -->
+      <div class="flyover-layer flyover-layer--back" id="layer-back">
+        <img class="flyover-frame" src="/images/bench/sequence/01-hero.webp" alt="" />
+      </div>
+      <div class="flyover-layer flyover-layer--front" id="layer-front">
+        <img class="flyover-frame" src="/images/bench/sequence/01-hero.webp" alt="" />
+      </div>
 
       <div class="flyover-content">
         <div class="flyover-scrim">
@@ -169,59 +182,73 @@
         '/images/bench/sequence/hero-key-4.webp',
       ];
 
-      const img = document.getElementById('flyover-img');
+      const layerBack = document.getElementById('layer-back');
+      const layerFront = document.getElementById('layer-front');
       const counter = document.getElementById('counter');
       const hint = document.getElementById('scroll-hint');
 
-      if (!img || !counter || !hint) {
+      if (!layerBack || !layerFront || !counter || !hint) {
         console.error('Flyover: missing DOM elements');
         return;
       }
 
+      const imgBack = layerBack.querySelector('img');
+      const imgFront = layerFront.querySelector('img');
+      if (!imgBack || !imgFront) return;
+
       let currentFrame = 0;
+      let activeLayer = 'front'; // which layer is currently visible
 
       // Preload all frames
       frames.forEach(src => { const i = new Image(); i.src = src; });
 
-      // Each key frame covers 25% of the scroll (4 frames = 100%)
-      // Within each 25% segment, translateY goes from 0% to -15%
-      // (matching the ~15% shift between key frames)
-      // At the boundary, we swap the image src and reset translateY
-
-      const PAN_RANGE = 15; // % of translateY per key frame segment
+      const PAN_RANGE = 10; // % of translateY per segment — tuned to match Gemini shift
 
       ScrollTrigger.create({
         trigger: '#flyover',
         start: 'top top',
         end: 'bottom bottom',
         onUpdate: (self) => {
-          const p = self.progress; // 0 to 1
+          const p = self.progress;
 
-          // Which key frame segment are we in?
+          // Which key frame segment?
           const segmentFloat = p * frames.length;
           const segment = Math.min(frames.length - 1, Math.floor(segmentFloat));
+          const segmentProgress = Math.min(1, segmentFloat - segment);
 
-          // Progress within this segment (0 to 1)
-          const segmentProgress = segmentFloat - segment;
+          // Get references to active and inactive layers
+          const activeEl = activeLayer === 'front' ? layerFront : layerBack;
+          const inactiveEl = activeLayer === 'front' ? layerBack : layerFront;
+          const activeImg = activeLayer === 'front' ? imgFront : imgBack;
+          const inactiveImg = activeLayer === 'front' ? imgBack : imgFront;
 
-          // Swap key frame image if needed
+          // Key frame swap needed?
           if (segment !== currentFrame) {
+            // Load new frame on the INACTIVE (hidden) layer at translateY=0
+            inactiveImg.setAttribute('src', frames[segment]);
+            inactiveImg.style.transform = 'translateY(0%)';
+
+            // Crossfade: show inactive, hide active
+            inactiveEl.classList.remove('is-hidden');
+            activeEl.classList.add('is-hidden');
+
+            // Swap active reference
+            activeLayer = activeLayer === 'front' ? 'back' : 'front';
             currentFrame = segment;
-            img.setAttribute('src', frames[segment]);
             counter.textContent = 'F' + (segment + 1) + '/4';
           }
 
-          // Continuous translateY within the segment
-          // Moves from 0% to -PAN_RANGE% as segmentProgress goes 0→1
+          // Continuous pan on the ACTIVE layer
+          const nowActiveImg = activeLayer === 'front' ? imgFront : imgBack;
           const yOffset = -segmentProgress * PAN_RANGE;
-          img.style.transform = 'translateY(' + yOffset + '%)';
+          nowActiveImg.style.transform = 'translateY(' + yOffset + '%)';
 
           // Fade scroll hint
           hint.style.opacity = p > 0.05 ? '0' : '1';
         }
       });
 
-      console.log('Flyover: ready — continuous pan with key frame swaps');
+      console.log('Flyover: ready — crossfade + continuous pan');
     });
   </script>
 </body>
