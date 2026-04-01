@@ -35,19 +35,17 @@
       overflow: hidden;
     }
 
-    /* Two-layer crossfade system */
+    /* Single image — CSS translateY does the continuous pan */
     .flyover-frame {
       position: absolute;
-      inset: 0;
+      /* Oversized: 130% height so translateY has room to move */
+      top: -15%;
+      left: 0;
       width: 100%;
-      height: 100%;
+      height: 130%;
       object-fit: cover;
-      transition: opacity 0.4s ease-out;
+      will-change: transform;
     }
-
-    .flyover-frame--back { z-index: 0; }
-    .flyover-frame--front { z-index: 1; }
-    .flyover-frame.hidden { opacity: 0; }
 
     /* Content overlay */
     .flyover-content {
@@ -131,16 +129,9 @@
 <body>
   <div class="flyover" id="flyover">
     <div class="flyover-sticky">
-      <!-- Two-layer crossfade: back + front -->
       <img
-        id="frame-back"
-        class="flyover-frame flyover-frame--back"
-        src="/images/bench/sequence/01-hero.webp"
-        alt=""
-      />
-      <img
-        id="frame-front"
-        class="flyover-frame flyover-frame--front"
+        id="flyover-img"
+        class="flyover-frame"
         src="/images/bench/sequence/01-hero.webp"
         alt=""
       />
@@ -178,60 +169,59 @@
         '/images/bench/sequence/hero-key-4.webp',
       ];
 
-      const back = document.getElementById('frame-back');
-      const front = document.getElementById('frame-front');
+      const img = document.getElementById('flyover-img');
       const counter = document.getElementById('counter');
       const hint = document.getElementById('scroll-hint');
 
-      if (!back || !front || !counter || !hint) {
-        console.error('Flyover: missing DOM elements', { back, front, counter, hint });
+      if (!img || !counter || !hint) {
+        console.error('Flyover: missing DOM elements');
         return;
       }
 
       let currentFrame = 0;
-      let showingFront = true;
 
       // Preload all frames
-      frames.forEach(src => { const img = new Image(); img.src = src; });
+      frames.forEach(src => { const i = new Image(); i.src = src; });
 
-      console.log('Flyover: ScrollTrigger initializing...');
+      // Each key frame covers 25% of the scroll (4 frames = 100%)
+      // Within each 25% segment, translateY goes from 0% to -15%
+      // (matching the ~15% shift between key frames)
+      // At the boundary, we swap the image src and reset translateY
+
+      const PAN_RANGE = 15; // % of translateY per key frame segment
 
       ScrollTrigger.create({
         trigger: '#flyover',
         start: 'top top',
         end: 'bottom bottom',
-        markers: true, // DEBUG: show trigger markers
         onUpdate: (self) => {
-          const frame = Math.min(
-            frames.length - 1,
-            Math.floor(self.progress * frames.length)
-          );
+          const p = self.progress; // 0 to 1
 
-          if (frame !== currentFrame) {
-            currentFrame = frame;
-            console.log('Flyover: switching to frame', frame + 1);
+          // Which key frame segment are we in?
+          const segmentFloat = p * frames.length;
+          const segment = Math.min(frames.length - 1, Math.floor(segmentFloat));
 
-            // Crossfade: load new frame on hidden layer, then swap opacity
-            if (showingFront) {
-              back.setAttribute('src', frames[frame]);
-              front.classList.add('hidden');
-              back.classList.remove('hidden');
-            } else {
-              front.setAttribute('src', frames[frame]);
-              back.classList.add('hidden');
-              front.classList.remove('hidden');
-            }
-            showingFront = !showingFront;
+          // Progress within this segment (0 to 1)
+          const segmentProgress = segmentFloat - segment;
 
-            counter.textContent = 'F' + (frame + 1) + '/4';
+          // Swap key frame image if needed
+          if (segment !== currentFrame) {
+            currentFrame = segment;
+            img.setAttribute('src', frames[segment]);
+            counter.textContent = 'F' + (segment + 1) + '/4';
           }
 
+          // Continuous translateY within the segment
+          // Moves from 0% to -PAN_RANGE% as segmentProgress goes 0→1
+          const yOffset = -segmentProgress * PAN_RANGE;
+          img.style.transform = 'translateY(' + yOffset + '%)';
+
           // Fade scroll hint
-          hint.style.opacity = self.progress > 0.05 ? '0' : '1';
+          hint.style.opacity = p > 0.05 ? '0' : '1';
         }
       });
 
-      console.log('Flyover: ready');
+      console.log('Flyover: ready — continuous pan with key frame swaps');
     });
   </script>
 </body>
