@@ -1,0 +1,227 @@
+---
+// Flyover prototype — hero scene only, 4 key frames
+---
+
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#D4C5A0" />
+  <title>A Bancada — Flyover Prototype</title>
+  <link rel="preload" href="/images/bench/sequence/01-hero.webp" as="image" />
+  <link rel="preload" href="/images/bench/sequence/hero-key-2.webp" as="image" />
+  <link rel="preload" href="/images/bench/sequence/hero-key-3.webp" as="image" />
+  <link rel="preload" href="/images/bench/sequence/hero-key-4.webp" as="image" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #D4C5A0;
+      font-family: 'Newsreader', Georgia, serif;
+      color: #3A3228;
+    }
+
+    .flyover {
+      height: 400vh;
+      position: relative;
+    }
+
+    .flyover-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    /* Two-layer crossfade system */
+    .flyover-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.4s ease-out;
+    }
+
+    .flyover-frame--back { z-index: 0; }
+    .flyover-frame--front { z-index: 1; }
+    .flyover-frame.hidden { opacity: 0; }
+
+    /* Content overlay */
+    .flyover-content {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .flyover-scrim {
+      background: rgba(212, 197, 160, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 2.5rem 3rem;
+      border-radius: 2px;
+    }
+
+    .flyover-content h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .flyover-content p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #6B6358;
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #9B9488;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .scroll-hint span {
+      display: block;
+      text-align: center;
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* Frame counter (debug) */
+    .frame-counter {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 30;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #9B9488;
+      background: rgba(212, 197, 160, 0.8);
+      padding: 0.3rem 0.6rem;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="flyover" id="flyover">
+    <div class="flyover-sticky">
+      <!-- Two-layer crossfade: back + front -->
+      <img
+        id="frame-back"
+        class="flyover-frame flyover-frame--back"
+        src="/images/bench/sequence/01-hero.webp"
+        alt=""
+      />
+      <img
+        id="frame-front"
+        class="flyover-frame flyover-frame--front"
+        src="/images/bench/sequence/01-hero.webp"
+        alt=""
+      />
+
+      <div class="flyover-content">
+        <div class="flyover-scrim">
+          <h1>lostincloud</h1>
+          <p>Laboratório de Investigação em Micologia</p>
+          <p style="margin-top: 0.5rem; font-size: 0.65rem; color: #9B9488;">
+            Est. 2014 · Tec Labs, Universidade de Lisboa · 8 Projetos I&D
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" id="scroll-hint">
+    scroll
+    <span>↓</span>
+  </div>
+
+  <div class="frame-counter" id="counter">F1/4</div>
+
+  <script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    const frames = [
+      '/images/bench/sequence/01-hero.webp',
+      '/images/bench/sequence/hero-key-2.webp',
+      '/images/bench/sequence/hero-key-3.webp',
+      '/images/bench/sequence/hero-key-4.webp',
+    ];
+
+    const back = document.getElementById('frame-back') as HTMLImageElement;
+    const front = document.getElementById('frame-front') as HTMLImageElement;
+    const counter = document.getElementById('counter')!;
+    const hint = document.getElementById('scroll-hint')!;
+    let currentFrame = 0;
+    let showingFront = true;
+
+    // Preload all frames
+    frames.forEach(src => { const img = new Image(); img.src = src; });
+
+    ScrollTrigger.create({
+      trigger: '#flyover',
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: (self) => {
+        const frame = Math.min(
+          frames.length - 1,
+          Math.floor(self.progress * frames.length)
+        );
+
+        if (frame !== currentFrame) {
+          currentFrame = frame;
+
+          // Crossfade: load new frame on the hidden layer, then swap opacity
+          if (showingFront) {
+            back.src = frames[frame];
+            front.classList.add('hidden');
+            back.classList.remove('hidden');
+          } else {
+            front.src = frames[frame];
+            back.classList.add('hidden');
+            front.classList.remove('hidden');
+          }
+          showingFront = !showingFront;
+
+          counter.textContent = `F${frame + 1}/4`;
+        }
+
+        // Fade scroll hint
+        if (self.progress > 0.05) {
+          hint.style.opacity = '0';
+        } else {
+          hint.style.opacity = '1';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
